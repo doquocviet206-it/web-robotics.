@@ -1,0 +1,107 @@
+@model List<web_robotics.Models.KnowledgeArticle>
+@{
+    ViewData["Title"] = "Nền Tảng Kiến Thức Chuyên Sâu Về Robot";
+}
+
+<div class="container py-5">
+    <!-- Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 pb-2 border-bottom border-secondary">
+        <div>
+            <span class="badge bg-cyan-subtle text-cyan border border-info-subtle px-3 py-1 rounded-pill mb-2">Robotics Knowledge Hub</span>
+            <h1 class="display-6 fw-bold text-light mb-1">Cơ Sở Tri Thức Kỹ Thuật Robot Mở</h1>
+            <p class="text-secondary fs-sm mb-0">Hỗ trợ tra cứu lý thuyết điều khiển, ROS 2, thuật toán SLAM, Động học Robot, Thị giác máy tính và Phần cứng FOC</p>
+        </div>
+        <div class="mt-3 mt-md-0">
+            <button class="btn btn-cyan rounded-pill px-3 shadow" data-bs-toggle="modal" data-bs-target="#aiAssistantModal">
+                <i class="bi bi-robot me-1"></i> Hỏi AI Kiến Thức Nhanh
+            </button>
+        </div>
+    </div>
+
+    <!-- Quick Knowledge Topics Pills -->
+    <div class="d-flex flex-wrap gap-2 mb-4">
+        <a asp-action="Index" class="btn btn-sm @(ViewBag.CurrentCategory == "All" ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Tất cả</a>
+        <a asp-action="Index" asp-route-category="ROS" class="btn btn-sm @(ViewBag.CurrentCategory?.ToString().Contains("ROS") == true ? "btn-cyan" : "btn-outline-secondary") rounded-pill">ROS / ROS 2 & Middleware</a>
+        <a asp-action="Index" asp-route-category="SLAM" class="btn btn-sm @(ViewBag.CurrentCategory?.ToString().Contains("SLAM") == true ? "btn-cyan" : "btn-outline-secondary") rounded-pill">SLAM & Điều Hướng (Nav2)</a>
+        <a asp-action="Index" asp-route-category="Điều khiển" class="btn btn-sm @(ViewBag.CurrentCategory?.ToString().Contains("Điều khiển") == true ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Động học & Động lực học</a>
+        <a asp-action="Index" asp-route-category="AI" class="btn btn-sm @(ViewBag.CurrentCategory?.ToString().Contains("AI") == true ? "btn-cyan" : "btn-outline-secondary") rounded-pill">3D Vision & Deep Learning</a>
+        <a asp-action="Index" asp-route-category="Phần cứng" class="btn btn-sm @(ViewBag.CurrentCategory?.ToString().Contains("Phần cứng") == true ? "btn-cyan" : "btn-outline-secondary") rounded-pill">FOC & Điện tử Nhúng</a>
+        <a asp-action="Index" asp-route-category="Tiêu chuẩn" class="btn btn-sm @(ViewBag.CurrentCategory?.ToString().Contains("Tiêu chuẩn") == true ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Tiêu Chuẩn & An Toàn ISO</a>
+    </div>
+
+    <!-- Search Form -->
+    <div class="card bg-dark-card border-secondary rounded-4 p-3 mb-4 shadow-sm">
+        <form method="get" class="row g-2">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text bg-darker border-secondary text-secondary"><i class="bi bi-search"></i></span>
+                    <input type="text" name="search" class="form-control bg-darker border-secondary text-light" placeholder="Nhập từ khóa tra cứu (vd: ROS2, Inverse Kinematics, E-Stop...)" value="@ViewBag.CurrentSearch">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <select name="level" class="form-select bg-darker border-secondary text-light" onchange="this.form.submit()">
+                    <option value="All" selected="@(ViewBag.CurrentLevel == "All")">-- Tất cả cấp độ --</option>
+                    <option value="Cơ bản" selected="@(ViewBag.CurrentLevel == "Cơ bản")">Cơ bản</option>
+                    <option value="Trung cấp" selected="@(ViewBag.CurrentLevel == "Trung cấp")">Trung cấp</option>
+                    <option value="Nâng cao" selected="@(ViewBag.CurrentLevel == "Nâng cao")">Nâng cao</option>
+                    <option value="Chuyên sâu" selected="@(ViewBag.CurrentLevel == "Chuyên sâu")">Chuyên sâu</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-cyan w-100 rounded-pill">Tra cứu bài viết</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Articles List -->
+    @if (!Model.Any())
+    {
+        <div class="alert alert-dark border-secondary text-center py-5 my-4">
+            <i class="bi bi-search fs-2 text-cyan d-block mb-2"></i>
+            <h5>Chưa tìm thấy bài viết kỹ thuật phù hợp</h5>
+            <p class="text-secondary mb-3">Bạn có thể hỏi Trợ lý AI ở góc dưới màn hình để được hỗ trợ giải thích trực tiếp.</p>
+            <a asp-action="Index" class="btn btn-sm btn-outline-cyan rounded-pill">Xem tất cả bài viết</a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var article in Model)
+            {
+                <div class="col-lg-6">
+                    <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 shadow-sm card-hover-effect d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1">@article.Category</span>
+                            <span class="badge bg-secondary-subtle text-warning"><i class="bi bi-speedometer2 me-1"></i>@article.Level</span>
+                        </div>
+
+                        <h4 class="fw-bold text-light mb-2 lh-base">
+                            <a asp-action="Detail" asp-route-id="@article.Slug" class="text-light text-decoration-none hover-cyan">
+                                @article.Title
+                            </a>
+                        </h4>
+                        
+                        <p class="text-secondary fs-sm flex-grow-1 leading-relaxed">
+                            @article.Summary
+                        </p>
+
+                        <div class="d-flex flex-wrap gap-1 mb-3">
+                            @foreach (var tag in article.Tags)
+                            {
+                                <span class="badge bg-darker text-secondary border border-secondary fs-xs">#@tag</span>
+                            }
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary fs-xs text-secondary mt-auto">
+                            <div><i class="bi bi-person me-1 text-cyan"></i>@article.Author</div>
+                            <div>
+                                <span class="me-3"><i class="bi bi-clock me-1"></i>@article.ReadTimeMinutes phút đọc</span>
+                                <span><i class="bi bi-calendar3 me-1"></i>@article.PublishedDate</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

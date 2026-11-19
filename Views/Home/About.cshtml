@@ -1,0 +1,123 @@
+@{
+    ViewData["Title"] = "Giới Thiệu Phòng Thí Nghiệm Robotics (RoboLab)";
+}
+
+<div class="container py-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb fs-sm">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-cyan text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item active text-secondary" aria-current="page">Về Phòng Thí Nghiệm</li>
+        </ol>
+    </nav>
+
+    <!-- Lab Hero -->
+    <div class="row align-items-center g-5 mb-5 pb-4 border-bottom border-secondary">
+        <div class="col-lg-6">
+            <span class="badge bg-cyan-subtle text-cyan border border-info-subtle px-3 py-1 rounded-pill mb-3">Trung Tâm Nghiên Cứu Xuất Sắc</span>
+            <h1 class="display-5 fw-bold text-light mb-3">
+                Xây Dựng Thế Hệ Robot Thông Minh <span class="text-gradient">Phục Vụ Con Người</span>
+            </h1>
+            <p class="text-secondary leading-relaxed">
+                Được thành lập từ năm 2015, Phòng Thí Nghiệm Robotics & Trí Tuệ Nhân Tạo (RoboLab) là đơn vị nghiên cứu tiên phong kết hợp giữa lý thuyết điều khiển tự động kinh điển, cơ khí chính xác và trí tuệ nhân tạo hiện đại.
+            </p>
+            <p class="text-secondary leading-relaxed">
+                Mục tiêu của Lab là làm chủ chuỗi công nghệ lõi: từ thiết kế cơ cấu phần cứng, phát triển bo mạch điều khiển mô-men xoắn thời gian thực, đến thuật toán định vị SLAM, học tăng cường (Deep RL) và thị giác máy tính 3D cho robot công nghiệp và dịch vụ.
+            </p>
+        </div>
+        <div class="col-lg-6">
+            <div class="row g-3">
+                <div class="col-6">
+                    <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80" class="img-fluid rounded-4 shadow border border-secondary" alt="Lab Research">
+                </div>
+                <div class="col-6">
+                    <img src="https://images.unsplash.com/photo-1535378917042-10a22c95931a?auto=format&fit=crop&w=600&q=80" class="img-fluid rounded-4 shadow border border-secondary mt-4" alt="Robotics Development">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Pillars / Research Areas -->
+    <div class="mb-5 pb-4">
+        <div class="text-center max-w-2xl mx-auto mb-5">
+            <span class="text-cyan fw-bold text-uppercase fs-xs">Mũi Nhọn Công Nghệ</span>
+            <h2 class="fw-bold text-light">4 Hướng Nghiên Cứu Chiến Lược Của Lab</h2>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 text-center card-hover-effect">
+                    <div class="brand-icon-box mx-auto mb-3" style="width: 50px; height: 50px; font-size: 1.5rem;">
+                        <i class="bi bi-truck"></i>
+                    </div>
+                    <h5 class="fw-bold text-light mb-2">Autonomous Mobile Robot (AMR)</h5>
+                    <p class="text-secondary fs-sm mb-0">Hệ thống xe tự hành kho xưởng, thuật toán Cartographer LiDAR SLAM, điều hướng Nav2, quản trị đội xe phân tán.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 text-center card-hover-effect">
+                    <div class="brand-icon-box mx-auto mb-3" style="width: 50px; height: 50px; font-size: 1.5rem;">
+                        <i class="bi bi-tools"></i>
+                    </div>
+                    <h5 class="fw-bold text-light mb-2">Manipulator & Haptics</h5>
+                    <p class="text-secondary fs-sm mb-0">Cánh tay robot 7-DoF linh hoạt, điều khiển lực đàn hồi (Impedance Control), tay gắp mềm phỏng sinh học.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 text-center card-hover-effect">
+                    <div class="brand-icon-box mx-auto mb-3" style="width: 50px; height: 50px; font-size: 1.5rem;">
+                        <i class="bi bi-eye"></i>
+                    </div>
+                    <h5 class="fw-bold text-light mb-2">3D Robot Vision & AI</h5>
+                    <p class="text-secondary fs-sm mb-0">Thị giác đám mây điểm 3D (Point Cloud), mạng nơ-ron ước lượng tư thế 6-DoF, gắp đồ vật lộn xộn (Bin-Picking).</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 text-center card-hover-effect">
+                    <div class="brand-icon-box mx-auto mb-3" style="width: 50px; height: 50px; font-size: 1.5rem;">
+                        <i class="bi bi-cpu"></i>
+                    </div>
+                    <h5 class="fw-bold text-light mb-2">FOC & Embedded RTOS</h5>
+                    <p class="text-secondary fs-sm mb-0">Thiết kế phần cứng FOC BLDC Driver, bus truyền thông thời gian thực EtherCAT/CAN-FD, hệ điều hành Xenomai.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Infrastructure & Facilities -->
+    <div class="card bg-darker border-secondary rounded-4 p-4 p-lg-5 mb-5 shadow">
+        <h3 class="fw-bold text-light mb-4 text-center">Cơ Sở Vật Chất & Trang Thiết Bị Phòng Thí Nghiệm</h3>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="d-flex align-items-start gap-3">
+                    <div class="text-cyan fs-3"><i class="bi bi-motherboard"></i></div>
+                    <div>
+                        <h6 class="fw-bold text-light mb-1">Xưởng Chế Tác Vi Mạch & SMT</h6>
+                        <p class="text-secondary fs-sm mb-0">Trang bị máy gắp dán linh kiện SMT tự động, lò hàn đối lưu 8 vùng nhiệt, máy hiện sóng số Agilent 4 kênh 500MHz.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="d-flex align-items-start gap-3">
+                    <div class="text-cyan fs-3"><i class="bi bi-gpu-card"></i></div>
+                    <div>
+                        <h6 class="fw-bold text-light mb-1">Cụm Máy Chủ Tính Toán GPU AI</h6>
+                        <p class="text-secondary fs-sm mb-0">Cụm 4 máy chủ NVIDIA HGX 8x H100 chuyên dụng cho mô phỏng Sim-to-Real (Isaac Gym, MuJoCo) và huấn luyện mô hình VLA.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="d-flex align-items-start gap-3">
+                    <div class="text-cyan fs-3"><i class="bi bi-building"></i></div>
+                    <div>
+                        <h6 class="fw-bold text-light mb-1">Khu Vực Thử Nghiệm Thực Địa 500m²</h6>
+                        <p class="text-secondary fs-sm mb-0">Mô hình kho thông minh có giá kệ hàng chuẩn công nghiệp, mặt sàn dốc, cầu thang giả lập và phòng khử trùng y tế tiêu chuẩn.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

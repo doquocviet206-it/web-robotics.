@@ -1,0 +1,193 @@
+@model web_robotics.Controllers.SearchViewModel
+@{
+    ViewData["Title"] = "Kết Quả Tra Cứu Toàn Diện - RoboLab";
+}
+
+<div class="container py-5">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 pb-2 border-bottom border-secondary">
+        <div>
+            <span class="badge bg-cyan-subtle text-cyan border border-info-subtle px-3 py-1 rounded-pill mb-2">Omni-Search Engine</span>
+            <h1 class="display-6 fw-bold text-light mb-1">Tra Cứu Thông Tin & Kiến Thức Robot</h1>
+            <p class="text-secondary fs-sm mb-0">Tìm kiếm xuyên suốt các dự án, bài viết kỹ thuật, bài báo quốc tế, tài liệu SOP và nhà nghiên cứu</p>
+        </div>
+    </div>
+
+    <!-- Search Input Form -->
+    <div class="card bg-dark-card border-secondary rounded-4 p-4 mb-4 shadow">
+        <form method="get" class="row g-3">
+            <div class="col-md-9">
+                <div class="input-group">
+                    <span class="input-group-text bg-darker border-secondary text-cyan"><i class="bi bi-search"></i></span>
+                    <input type="text" name="q" class="form-control form-control-lg bg-darker border-secondary text-light" placeholder="Nhập từ khóa: SLAM, Cartographer, FOC, ROS 2, AeroBot, Inverse Kinematics..." value="@Model.Query">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-cyan btn-lg w-100 rounded-pill fw-semibold shadow">
+                    <i class="bi bi-search me-1"></i> Tra Cứu
+                </button>
+            </div>
+            <div class="col-12">
+                <div class="d-flex flex-wrap align-items-center gap-2 fs-sm">
+                    <span class="text-secondary">Bộ lọc hiển thị:</span>
+                    <a asp-action="Index" asp-route-q="@Model.Query" asp-route-filter="all" class="btn btn-xs @(Model.Filter == "all" ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Tất cả (@Model.TotalMatches)</a>
+                    <a asp-action="Index" asp-route-q="@Model.Query" asp-route-filter="projects" class="btn btn-xs @(Model.Filter == "projects" ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Dự án Robot (@Model.Projects.Count)</a>
+                    <a asp-action="Index" asp-route-q="@Model.Query" asp-route-filter="knowledge" class="btn btn-xs @(Model.Filter == "knowledge" ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Kiến thức chuyên sâu (@Model.Articles.Count)</a>
+                    <a asp-action="Index" asp-route-q="@Model.Query" asp-route-filter="research" class="btn btn-xs @(Model.Filter == "research" ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Công bố khoa học (@Model.Publications.Count)</a>
+                    <a asp-action="Index" asp-route-q="@Model.Query" asp-route-filter="members" class="btn btn-xs @(Model.Filter == "members" ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Thành viên Lab (@Model.Members.Count)</a>
+                    <a asp-action="Index" asp-route-q="@Model.Query" asp-route-filter="docs" class="btn btn-xs @(Model.Filter == "docs" ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Tài liệu & SOP (@Model.Docs.Count)</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    @if (string.IsNullOrWhiteSpace(Model.Query))
+    {
+        <div class="alert alert-dark border-secondary p-5 text-center my-4">
+            <i class="bi bi-search fs-1 text-cyan d-block mb-3"></i>
+            <h4 class="fw-bold text-light">Nhập từ khóa để bắt đầu tra cứu</h4>
+            <p class="text-secondary mb-4">Hệ thống hỗ trợ tra cứu toàn diện từ cơ sở dữ liệu chuyên ngành Robot của RoboLab.</p>
+            <div class="d-flex flex-wrap justify-content-center gap-2">
+                <a asp-action="Index" asp-route-q="ROS 2" class="btn btn-sm btn-outline-secondary rounded-pill">ROS 2</a>
+                <a asp-action="Index" asp-route-q="SLAM" class="btn btn-sm btn-outline-secondary rounded-pill">SLAM</a>
+                <a asp-action="Index" asp-route-q="FOC" class="btn btn-sm btn-outline-secondary rounded-pill">FOC BLDC</a>
+                <a asp-action="Index" asp-route-q="AeroBot" class="btn btn-sm btn-outline-secondary rounded-pill">AeroBot-AMR</a>
+                <a asp-action="Index" asp-route-q="CyberArm" class="btn btn-sm btn-outline-secondary rounded-pill">CyberArm 7-DoF</a>
+            </div>
+        </div>
+    }
+    else if (Model.TotalMatches == 0)
+    {
+        <div class="alert alert-dark border-secondary p-5 text-center my-4">
+            <i class="bi bi-question-circle fs-1 text-warning d-block mb-3"></i>
+            <h4 class="fw-bold text-light">Không tìm thấy kết quả phù hợp cho "@Model.Query"</h4>
+            <p class="text-secondary mb-4">Bạn có thể hỏi trực tiếp Trợ lý AI của Lab để được giải thích hoặc tra cứu linh hoạt hơn.</p>
+            <button class="btn btn-cyan rounded-pill px-4" onclick="askPresetQuestion('@Model.Query')">
+                <i class="bi bi-robot me-1"></i> Nhờ Trợ lý AI trả lời
+            </button>
+        </div>
+    }
+    else
+    {
+        <div class="mb-4 text-secondary fs-sm">
+            Tìm thấy <strong class="text-cyan">@Model.TotalMatches</strong> kết quả phù hợp cho từ khóa <strong class="text-light">"@Model.Query"</strong>:
+        </div>
+
+        <!-- 1. Projects matches -->
+        @if (Model.Projects.Any())
+        {
+            <div class="mb-5">
+                <h4 class="fw-bold text-light mb-3 border-start border-3 border-cyan ps-2">Dự Án & Sản Phẩm Robot (@Model.Projects.Count)</h4>
+                <div class="row g-3">
+                    @foreach (var p in Model.Projects)
+                    {
+                        <div class="col-md-6">
+                            <div class="card bg-dark-card border-secondary rounded-3 p-3 h-100 card-hover-effect">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="badge bg-darker text-cyan border border-secondary fs-xs">@p.Category</span>
+                                    <span class="badge @(p.IsCompletedProduct ? "bg-success" : "bg-warning text-dark") fs-xs">@p.Status</span>
+                                </div>
+                                <h6 class="fw-bold text-light mb-1">
+                                    <a asp-controller="Projects" asp-action="Detail" asp-route-id="@p.Slug" class="text-light text-decoration-none hover-cyan">@p.Title</a>
+                                </h6>
+                                <p class="text-secondary fs-xs mb-2">@p.ShortDescription</p>
+                                <div class="fs-xs text-info font-mono mt-auto"><i class="bi bi-cpu me-1"></i>@p.TechStack</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+        <!-- 2. Knowledge Articles matches -->
+        @if (Model.Articles.Any())
+        {
+            <div class="mb-5">
+                <h4 class="fw-bold text-light mb-3 border-start border-3 border-cyan ps-2">Nền Tảng Kiến Thức Chuyên Sâu (@Model.Articles.Count)</h4>
+                <div class="row g-3">
+                    @foreach (var a in Model.Articles)
+                    {
+                        <div class="col-md-6">
+                            <div class="card bg-dark-card border-secondary rounded-3 p-3 h-100 card-hover-effect">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="badge bg-primary-subtle text-primary fs-xs">@a.Category</span>
+                                    <span class="text-muted fs-xs">@a.ReadTimeMinutes phút đọc</span>
+                                </div>
+                                <h6 class="fw-bold text-light mb-1">
+                                    <a asp-controller="Knowledge" asp-action="Detail" asp-route-id="@a.Slug" class="text-light text-decoration-none hover-cyan">@a.Title</a>
+                                </h6>
+                                <p class="text-secondary fs-xs mb-2">@a.Summary</p>
+                                <div class="fs-xs text-secondary mt-auto"><i class="bi bi-person me-1"></i>@a.Author</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+        <!-- 3. Publications matches -->
+        @if (Model.Publications.Any())
+        {
+            <div class="mb-5">
+                <h4 class="fw-bold text-light mb-3 border-start border-3 border-cyan ps-2">Công Bố Khoa Học Quốc Tế (@Model.Publications.Count)</h4>
+                <div class="space-y-3">
+                    @foreach (var pub in Model.Publications)
+                    {
+                        <div class="card bg-dark-card border-secondary rounded-3 p-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="badge bg-danger-subtle text-danger fs-xs">@pub.CitationRank</span>
+                                <span class="fs-xs text-muted">Năm @pub.Year</span>
+                            </div>
+                            <h6 class="fw-bold text-light mb-1"><a href="@pub.PaperUrl" target="_blank" class="text-light text-decoration-none hover-cyan">@pub.Title</a></h6>
+                            <p class="text-secondary fs-xs mb-2">@pub.Abstract</p>
+                            <div class="fs-xs text-cyan">Tác giả: @pub.Authors &bull; DOI: @pub.Doi</div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+        <!-- 4. Members matches -->
+        @if (Model.Members.Any())
+        {
+            <div class="mb-5">
+                <h4 class="fw-bold text-light mb-3 border-start border-3 border-cyan ps-2">Nhà Khoa Học & Kỹ Sư (@Model.Members.Count)</h4>
+                <div class="row g-3">
+                    @foreach (var m in Model.Members)
+                    {
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card bg-dark-card border-secondary rounded-3 p-3 d-flex flex-row align-items-center gap-3">
+                                <img src="@m.AvatarUrl" class="rounded-circle object-fit-cover" style="width: 55px; height: 55px;" alt="@m.Name">
+                                <div>
+                                    <h6 class="fw-bold text-light mb-0"><a asp-controller="Members" asp-action="Detail" asp-route-id="@m.Id" class="text-light text-decoration-none hover-cyan">@m.Name</a></h6>
+                                    <small class="text-cyan fs-xs d-block">@m.Role</small>
+                                    <small class="text-secondary fs-xs">@m.Specialization.Split(',')[0]</small>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+        <!-- 5. Docs matches -->
+        @if (Model.Docs.Any())
+        {
+            <div class="mb-5">
+                <h4 class="fw-bold text-light mb-3 border-start border-3 border-cyan ps-2">Tài Liệu Kỹ Thuật & SOP (@Model.Docs.Count)</h4>
+                <div class="row g-3">
+                    @foreach (var d in Model.Docs)
+                    {
+                        <div class="col-md-6">
+                            <div class="card bg-dark-card border-secondary rounded-3 p-3">
+                                <span class="badge bg-info-subtle text-info fs-xs mb-1 w-fit">@d.Category</span>
+                                <h6 class="fw-bold text-light mb-1">@d.Title</h6>
+                                <p class="text-secondary fs-xs mb-2">@d.Description</p>
+                                <a asp-controller="Docs" asp-action="Index" class="btn btn-xs btn-outline-cyan rounded-pill w-fit">Xem tài liệu</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>

@@ -1,0 +1,284 @@
+@model web_robotics.Models.LabOverviewViewModel
+@{
+    ViewData["Title"] = "Phòng Thí Nghiệm Nghiên Cứu Robotics & Trí Tuệ Nhân Tạo";
+}
+
+<!-- Hero Section -->
+<section class="hero-gradient lab-hero py-5 py-lg-6 position-relative">
+    <div class="container py-4">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7">
+                <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-cyan-subtle text-cyan border border-info-subtle fs-sm mb-3">
+                    <i class="bi bi-stars"></i>
+                    <span>ROBOTICS · AI · ENGINEERING</span>
+                </div>
+                <h1 class="display-4 fw-extrabold text-light mb-3 lh-sm">
+                    Từ ý tưởng đến <br/>
+                    <span class="text-gradient">robot của tương lai.</span>
+                </h1>
+                <p class="lead text-secondary mb-4 fs-6">
+                    Nghiên cứu chế tạo các hệ thống Robot tự hành (AMR), cánh tay robot thao tác chính xác cao, robot phỏng sinh học và thị giác máy tính 3D. Cung cấp nền tảng tri thức mở, tài liệu kỹ thuật chuẩn mực cho cộng đồng khoa học và doanh nghiệp.
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a asp-controller="Projects" asp-action="Index" class="btn btn-cyan px-4 py-2 rounded-pill fw-semibold shadow">
+                        <i class="bi bi-box-seam me-2"></i> Khám phá dự án
+                    </a>
+                    <a asp-controller="Knowledge" asp-action="Index" class="btn btn-outline-light px-4 py-2 rounded-pill fw-medium">
+                        <i class="bi bi-journal-text me-2"></i> Đọc kiến thức Robot
+                    </a>
+                    <button class="btn btn-outline-cyan px-4 py-2 rounded-pill" data-bs-toggle="modal" data-bs-target="#aiAssistantModal">
+                        <i class="bi bi-chat-dots-fill me-1"></i> Tra cứu AI Lab
+                    </button>
+                </div>
+
+                <!-- Live Quick Search Pill -->
+                <div class="mt-4 pt-3">
+                    <form class="input-group shadow-lg" asp-controller="Search" asp-action="Index" method="get" style="max-width: 580px;">
+                        <span class="input-group-text bg-darker border-secondary text-cyan"><i class="bi bi-search"></i></span>
+                        <input type="text" name="q" class="form-control bg-darker border-secondary text-light py-2" aria-label="Tìm kiếm kiến thức và dự án" placeholder="Tìm ROS 2, SLAM, AeroBot...">
+                        <button class="btn btn-primary px-4 fw-medium" type="submit">Tìm kiếm</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <!-- Highlight Hero Graphic Box -->
+                <div class="position-relative">
+                    <div class="card bg-dark-card border-secondary rounded-4 shadow-2xl overflow-hidden card-hover-effect">
+                        <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=80" class="card-img-top object-fit-cover" style="height: 260px;" alt="Robotics Research">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">Sản phẩm tiêu biểu</span>
+                                <small class="text-secondary"><i class="bi bi-check2-circle text-success me-1"></i>Đã ứng dụng thực tế</small>
+                            </div>
+                            <h5 class="fw-bold text-light mb-1">AeroBot-AMR 500: Xe Tự Hành Kho</h5>
+                            <p class="text-secondary fs-sm mb-3">Tải trọng 500kg, điều hướng 3D LiDAR SLAM, hệ thống an toàn kép đạt chuẩn ISO 3691-4.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-secondary-subtle text-info">ROS 2 Humble / Cartographer</span>
+                                <a asp-controller="Projects" asp-action="Detail" asp-route-id="aerobot-amr-500" class="btn btn-sm btn-outline-cyan rounded-pill">
+                                    Chi tiết <i class="bi bi-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metric Counter Strip -->
+        <div class="row g-3 mt-4 pt-2">
+            <div class="col-6 col-md-3">
+                <div class="hero-stats-box text-center">
+                    <div class="fs-1 fw-bold text-cyan">@Model.TotalProjects</div>
+                    <div class="text-secondary fs-sm fw-medium">Dự án Robot R&D</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="hero-stats-box text-center">
+                    <div class="fs-1 fw-bold text-success">@Model.CompletedProducts</div>
+                    <div class="text-secondary fs-sm fw-medium">Sản phẩm Hoàn thiện</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="hero-stats-box text-center">
+                    <div class="fs-1 fw-bold text-warning">@Model.ActivePublications</div>
+                    <div class="text-secondary fs-sm fw-medium">Bài báo IEEE / Q1</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="hero-stats-box text-center">
+                    <div class="fs-1 fw-bold text-primary">@Model.MembersCount</div>
+                    <div class="text-secondary fs-sm fw-medium">Nhà Khoa Học & Kỹ Sư</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Projects Section -->
+<section class="py-5">
+    <div class="container py-3">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
+            <div>
+                <span class="text-cyan fw-bold text-uppercase fs-xs tracking-wider">Hệ Thống Nghiên Cứu</span>
+                <h2 class="fw-bold text-light mb-1">Dự Án Robot Tiêu Biểu</h2>
+                <p class="text-secondary mb-0 fs-sm">Các mô hình thử nghiệm và thành tựu chế tạo tại phòng thí nghiệm</p>
+            </div>
+            <div class="mt-3 mt-md-0">
+                <a asp-controller="Projects" asp-action="Index" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                    Xem tất cả dự án <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var proj in Model.FeaturedProjects)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 bg-dark-card border-secondary rounded-4 shadow-sm overflow-hidden card-hover-effect">
+                        <div class="position-relative">
+                            <img src="@proj.ImageUrl" class="card-img-top object-fit-cover" style="height: 200px;" alt="@proj.Title">
+                            <span class="position-absolute top-0 end-0 m-3 badge @(proj.IsCompletedProduct ? "bg-success" : "bg-warning text-dark")">
+                                @proj.Status
+                            </span>
+                            <span class="position-absolute bottom-0 start-0 m-3 badge bg-darker text-cyan border border-secondary">
+                                @proj.Category
+                            </span>
+                        </div>
+                        <div class="card-body p-4 d-flex flex-column">
+                            <h5 class="fw-bold text-light mb-2">@proj.Title</h5>
+                            <p class="text-secondary fs-sm flex-grow-1 line-clamp-3">@proj.ShortDescription</p>
+                            
+                            <div class="mb-3 pt-2 border-top border-secondary-subtle fs-xs text-muted">
+                                <div><i class="bi bi-cpu me-1 text-cyan"></i><strong>Tech:</strong> @proj.TechStack</div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <span class="fs-xs text-secondary"><i class="bi bi-person-circle me-1"></i>@proj.LeadResearcher</span>
+                                <a asp-controller="Projects" asp-action="Detail" asp-route-id="@proj.Slug" class="btn btn-sm btn-outline-cyan rounded-pill">
+                                    Chi tiết <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Robotics Knowledge Base Section -->
+<section class="py-5 bg-darker border-top border-bottom border-secondary-subtle">
+    <div class="container py-3">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
+            <div>
+                <span class="text-cyan fw-bold text-uppercase fs-xs tracking-wider">Nền Tảng Kiến Thức Chuyên Sâu</span>
+                <h2 class="fw-bold text-light mb-1">Cơ Sở Tri Thức Kỹ Thuật Robot</h2>
+                <p class="text-secondary mb-0 fs-sm">Tài liệu, giáo trình mở và bài giảng kỹ thuật do các chuyên gia biên soạn</p>
+            </div>
+            <div class="mt-3 mt-md-0">
+                <a asp-controller="Knowledge" asp-action="Index" class="btn btn-sm btn-outline-cyan rounded-pill px-3">
+                    Vào kho kiến thức <i class="bi bi-journal-code ms-1"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var article in Model.LatestArticles)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 shadow-sm card-hover-effect d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1">@article.Category</span>
+                            <span class="badge bg-secondary-subtle text-warning">@article.Level</span>
+                        </div>
+                        <h5 class="fw-bold text-light mb-2 lh-base">
+                            <a asp-controller="Knowledge" asp-action="Detail" asp-route-id="@article.Slug" class="text-light text-decoration-none hover-cyan">
+                                @article.Title
+                            </a>
+                        </h5>
+                        <p class="text-secondary fs-sm flex-grow-1">@article.Summary</p>
+                        
+                        <div class="d-flex flex-wrap gap-1 mb-3">
+                            @foreach (var tag in article.Tags.Take(4))
+                            {
+                                <span class="badge bg-darker text-secondary border border-secondary fs-xs">#@tag</span>
+                            }
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary fs-xs text-secondary mt-auto">
+                            <span><i class="bi bi-clock me-1 text-cyan"></i>@article.ReadTimeMinutes phút đọc</span>
+                            <span><i class="bi bi-calendar3 me-1"></i>@article.PublishedDate</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Research Publications IEEE Strip -->
+<section class="py-5">
+    <div class="container py-3">
+        <div class="row align-items-center mb-4">
+            <div class="col-md-8">
+                <span class="text-cyan fw-bold text-uppercase fs-xs tracking-wider">Thành Tựu Học Thuật</span>
+                <h2 class="fw-bold text-light mb-1">Công Bố Khoa Học Quốc Tế</h2>
+                <p class="text-secondary fs-sm mb-0">Các công trình xuất bản tại IEEE Transactions, ICRA, IROS</p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <a asp-controller="Research" asp-action="Index" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                    Xem tất cả công bố <i class="bi bi-award ms-1"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-3">
+            @foreach (var pub in Model.RecentPublications)
+            {
+                <div class="col-12">
+                    <div class="card bg-dark-card border-secondary rounded-4 p-4 card-hover-effect">
+                        <div class="row align-items-center">
+                            <div class="col-lg-9">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle">@pub.CitationRank</span>
+                                    <span class="badge bg-secondary-subtle text-light">Năm @pub.Year</span>
+                                    <span class="badge bg-info-subtle text-info">@pub.Category</span>
+                                </div>
+                                <h5 class="fw-bold text-light mb-1">@pub.Title</h5>
+                                <p class="text-cyan fs-xs mb-2"><i class="bi bi-people me-1"></i>@pub.Authors &bull; <em>@pub.JournalOrConference</em></p>
+                                <p class="text-secondary fs-sm mb-0">@pub.Abstract</p>
+                            </div>
+                            <div class="col-lg-3 text-lg-end mt-3 mt-lg-0">
+                                <a href="@pub.PaperUrl" target="_blank" class="btn btn-sm btn-outline-cyan rounded-pill px-3">
+                                    <i class="bi bi-box-arrow-up-right me-1"></i> Xem trên IEEE
+                                </a>
+                                <div class="fs-xs text-muted mt-2">DOI: @pub.Doi</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Core Members Section -->
+<section class="py-5 bg-darker border-top border-secondary-subtle">
+    <div class="container py-3">
+        <div class="text-center max-w-2xl mx-auto mb-5">
+            <span class="text-cyan fw-bold text-uppercase fs-xs tracking-wider">Đội Ngũ Chuyên Gia</span>
+            <h2 class="fw-bold text-light mb-2">Ban Lãnh Đạo & Nhà Nghiên Cứu Trọng Điểm</h2>
+            <p class="text-secondary fs-sm">Các Giáo sư, Tiến sĩ và Kỹ sư trưởng định hướng các công nghệ chiến lược</p>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var m in Model.CoreMembers)
+            {
+                <div class="col-lg-3 col-md-6">
+                    <div class="card h-100 bg-dark-card border-secondary rounded-4 text-center p-4 card-hover-effect">
+                        <div class="position-relative mx-auto mb-3" style="width: 110px; height: 110px;">
+                            <img src="@m.AvatarUrl" class="rounded-circle object-fit-cover w-100 h-100 border border-2 border-cyan shadow" alt="@m.Name">
+                        </div>
+                        <h5 class="fw-bold text-light mb-1">@m.Name</h5>
+                        <p class="text-cyan fs-xs fw-semibold mb-2">@m.Role</p>
+                        <p class="text-secondary fs-xs mb-3 flex-grow-1">@m.Specialization</p>
+                        
+                        <div class="pt-3 border-top border-secondary">
+                            <a asp-controller="Members" asp-action="Detail" asp-route-id="@m.Id" class="btn btn-xs btn-outline-light rounded-pill px-3">
+                                Hồ sơ khoa học
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="text-center mt-4 pt-2">
+            <a asp-controller="Members" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">
+                Xem toàn bộ đội ngũ nghiên cứu <i class="bi bi-people-fill ms-1"></i>
+            </a>
+        </div>
+    </div>
+</section>
+

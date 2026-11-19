@@ -1,0 +1,97 @@
+@model List<web_robotics.Models.ResearchPublication>
+@{
+    ViewData["Title"] = "Kết Quả Nghiên Cứu & Công Bố Khoa Học Quốc Tế";
+}
+
+<div class="container py-5">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 pb-2 border-bottom border-secondary">
+        <div>
+            <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-1 rounded-pill mb-2">Scientific Output & Publications</span>
+            <h1 class="display-6 fw-bold text-light mb-1">Kết Quả Nghiên Cứu & Công Bố Khoa Học</h1>
+            <p class="text-secondary fs-sm mb-0">Các công trình được thẩm định và xuất bản trên IEEE Transactions, ICRA, IROS và các tạp chí nhóm Q1 thế giới</p>
+        </div>
+        <div class="mt-3 mt-md-0">
+            <span class="badge bg-darker border border-secondary text-cyan px-3 py-2 fs-sm">
+                <i class="bi bi-patch-check-fill me-1"></i> 100% Peer-Reviewed
+            </span>
+        </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="card bg-dark-card border-secondary rounded-4 p-3 mb-4 shadow-sm">
+        <form method="get" class="row g-2 align-items-center">
+            <div class="col-md-5">
+                <select name="category" class="form-select bg-darker border-secondary text-light" onchange="this.form.submit()">
+                    <option value="All" selected="@(ViewBag.CurrentCategory == "All")">-- Tất cả lĩnh vực nghiên cứu --</option>
+                    <option value="Control" selected="@(ViewBag.CurrentCategory == "Control")">Điều khiển tự động & Dynamics</option>
+                    <option value="Vision" selected="@(ViewBag.CurrentCategory == "Vision")">AI & Computer Vision</option>
+                    <option value="Quadruped" selected="@(ViewBag.CurrentCategory == "Quadruped")">Robot bốn chân & Locomotion</option>
+                    <option value="Soft" selected="@(ViewBag.CurrentCategory == "Soft")">Soft Robotics & Cảm biến</option>
+                    <option value="SLAM" selected="@(ViewBag.CurrentCategory == "SLAM")">SLAM & Multi-Robot Fleet</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <select name="year" class="form-select bg-darker border-secondary text-light" onchange="this.form.submit()">
+                    <option value="0" selected="@(ViewBag.CurrentYear == 0)">-- Tất cả năm xuất bản --</option>
+                    <option value="2025" selected="@(ViewBag.CurrentYear == 2025)">Năm 2025</option>
+                    <option value="2024" selected="@(ViewBag.CurrentYear == 2024)">Năm 2024</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-cyan w-100 rounded-pill">Lọc công bố</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Publications List -->
+    <div class="space-y-4">
+        @foreach (var pub in Model)
+        {
+            <div class="card bg-dark-card border-secondary rounded-4 p-4 shadow-sm card-hover-effect mb-3">
+                <div class="row g-4 align-items-center">
+                    <div class="col-lg-9">
+                        <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1">@pub.CitationRank</span>
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle">Năm @pub.Year</span>
+                            <span class="badge bg-secondary-subtle text-info">@pub.Category</span>
+                        </div>
+
+                        <h4 class="fw-bold text-light mb-2 lh-base">
+                            <a href="@pub.PaperUrl" target="_blank" class="text-light text-decoration-none hover-cyan">
+                                @pub.Title
+                            </a>
+                        </h4>
+
+                        <p class="text-cyan fs-xs mb-2">
+                            <i class="bi bi-people-fill me-1"></i>Tác giả: <strong>@pub.Authors</strong>
+                        </p>
+
+                        <p class="text-secondary fs-xs mb-3">
+                            <i class="bi bi-journal-text me-1 text-warning"></i>Nơi xuất bản: <strong class="text-light">@pub.JournalOrConference</strong>
+                        </p>
+
+                        <div class="card bg-darker border-secondary-subtle p-3 rounded-3 mb-2">
+                            <div class="fs-xs text-muted mb-1 fw-bold">ABSTRACT (TÓM TẮT KHOA HỌC):</div>
+                            <p class="text-secondary fs-sm mb-0 leading-relaxed">@pub.Abstract</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 text-lg-end">
+                        <div class="p-3 bg-darker rounded-3 border border-secondary text-center">
+                            <div class="fs-xs text-muted mb-1">Mã định danh số (DOI):</div>
+                            <code class="text-cyan fs-xs d-block mb-3 font-mono">@pub.Doi</code>
+
+                            <a href="@pub.PaperUrl" target="_blank" class="btn btn-sm btn-cyan rounded-pill w-100 mb-2">
+                                <i class="bi bi-box-arrow-up-right me-1"></i> Đọc bài báo đầy đủ
+                            </a>
+
+                            <button class="btn btn-xs btn-outline-secondary rounded-pill w-100" onclick="navigator.clipboard.writeText('@pub.Doi'); alert('Đã sao chép mã DOI!');">
+                                <i class="bi bi-clipboard me-1"></i> Copy BibTeX / DOI
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

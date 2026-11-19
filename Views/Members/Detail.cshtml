@@ -1,0 +1,89 @@
+@model web_robotics.Models.LabMember
+@{
+    ViewData["Title"] = "Hồ sơ khoa học: " + Model.Name;
+    var pubs = ViewBag.Publications as List<web_robotics.Models.ResearchPublication> ?? new();
+}
+
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb fs-sm">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-cyan text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Members" asp-action="Index" class="text-cyan text-decoration-none">Thành viên</a></li>
+            <li class="breadcrumb-item active text-secondary" aria-current="page">@Model.Name</li>
+        </ol>
+    </nav>
+
+    <div class="row g-5">
+        <div class="col-lg-4">
+            <div class="card bg-dark-card border-secondary rounded-4 p-4 text-center shadow mb-4">
+                <img src="@Model.AvatarUrl" class="rounded-circle object-fit-cover mx-auto mb-3 border border-3 border-cyan shadow" style="width: 160px; height: 160px;" alt="@Model.Name">
+                <h4 class="fw-bold text-light mb-1">@Model.Name</h4>
+                <p class="text-cyan fw-semibold fs-sm mb-1">@Model.Role</p>
+                <p class="text-secondary fs-xs mb-3">@Model.Title</p>
+
+                <div class="d-grid gap-2 mb-3">
+                    <a href="mailto:@Model.Email" class="btn btn-sm btn-cyan rounded-pill">
+                        <i class="bi bi-envelope-fill me-1"></i> @Model.Email
+                    </a>
+                </div>
+
+                <div class="d-flex justify-content-center gap-2 text-secondary fs-5 pt-3 border-top border-secondary">
+                    <a href="#" class="social-icon" title="Google Scholar"><i class="bi bi-mortarboard"></i></a>
+                    <a href="#" class="social-icon" title="ResearchGate"><i class="bi bi-journal-text"></i></a>
+                    <a href="#" class="social-icon" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                </div>
+            </div>
+
+            <!-- Highlights & Awards -->
+            <div class="card bg-dark-card border-secondary rounded-4 p-4 shadow">
+                <h6 class="fw-bold text-light mb-3"><i class="bi bi-award text-warning me-2"></i>Thành Tích Nổi Bật</h6>
+                <ul class="list-unstyled space-y-2 fs-xs text-secondary mb-0">
+                    @foreach (var h in Model.Highlights)
+                    {
+                        <li class="d-flex align-items-start gap-2">
+                            <i class="bi bi-check2-circle text-cyan mt-1"></i>
+                            <span class="text-light">@h</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="card bg-dark-card border-secondary rounded-4 p-4 p-md-5 shadow mb-4">
+                <h4 class="fw-bold text-light mb-3 border-start border-3 border-cyan ps-2">Tiểu Sử & Hướng Nghiên Cứu</h4>
+                <p class="text-secondary leading-relaxed mb-4">@Model.Bio</p>
+
+                <h5 class="fw-bold text-light mb-2">Chuyên môn mũi nhọn:</h5>
+                <div class="p-3 bg-darker rounded-3 border border-secondary mb-4">
+                    <code class="text-cyan fs-sm">@Model.Specialization</code>
+                </div>
+
+                <h4 class="fw-bold text-light mb-3 border-start border-3 border-cyan ps-2">Các Công Bố Khoa Học Tiêu Biểu</h4>
+                @if (!pubs.Any())
+                {
+                    <p class="text-secondary fs-sm">Đang cập nhật danh sách bài báo quốc tế của tác giả...</p>
+                }
+                else
+                {
+                    <div class="space-y-3">
+                        @foreach (var p in pubs)
+                        {
+                            <div class="p-3 bg-darker rounded-3 border border-secondary">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="badge bg-danger-subtle text-danger fs-xs">@p.CitationRank</span>
+                                    <small class="text-secondary">Năm: @p.Year</small>
+                                </div>
+                                <h6 class="fw-bold text-light mb-1">@p.Title</h6>
+                                <p class="text-secondary fs-xs mb-2"><em>@p.JournalOrConference</em> &bull; DOI: @p.Doi</p>
+                                <a href="@p.PaperUrl" target="_blank" class="text-cyan fs-xs text-decoration-none">
+                                    <i class="bi bi-box-arrow-up-right me-1"></i> Xem bài báo
+                                </a>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

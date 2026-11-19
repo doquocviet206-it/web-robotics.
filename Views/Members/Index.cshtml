@@ -1,0 +1,68 @@
+@model List<web_robotics.Models.LabMember>
+@{
+    ViewData["Title"] = "Đội Ngũ Nghiên Cứu & Nhân Sự Phòng Thí Nghiệm";
+}
+
+<div class="container py-5">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 pb-2 border-bottom border-secondary">
+        <div>
+            <span class="badge bg-cyan-subtle text-cyan border border-info-subtle px-3 py-1 rounded-pill mb-2">Research Team</span>
+            <h1 class="display-6 fw-bold text-light mb-1">Thành Viên & Nhà Khoa Học Của Lab</h1>
+            <p class="text-secondary fs-sm mb-0">Hội tụ các chuyên gia hàng đầu về điều khiển phi tuyến, AI, thị giác máy tính, phần cứng nhúng và cơ học chính xác</p>
+        </div>
+        <div class="mt-3 mt-md-0">
+            <a asp-controller="Home" asp-action="Contact" class="btn btn-outline-cyan rounded-pill px-3">
+                <i class="bi bi-mortarboard me-1"></i> Ứng tuyển Học bổng NCS
+            </a>
+        </div>
+    </div>
+
+    <!-- Filter by Specialty -->
+    <div class="d-flex flex-wrap gap-2 mb-4">
+        <a asp-action="Index" class="btn btn-sm @(ViewBag.CurrentRole == "All" ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Tất cả thành viên</a>
+        <a asp-action="Index" asp-route-role="Trưởng" class="btn btn-sm @(ViewBag.CurrentRole?.ToString().Contains("Trưởng") == true ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Ban Lãnh Đạo</a>
+        <a asp-action="Index" asp-route-role="Vision" class="btn btn-sm @(ViewBag.CurrentRole?.ToString().Contains("Vision") == true ? "btn-cyan" : "btn-outline-secondary") rounded-pill">AI & Computer Vision</a>
+        <a asp-action="Index" asp-route-role="Nhúng" class="btn btn-sm @(ViewBag.CurrentRole?.ToString().Contains("Nhúng") == true ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Điều Khiển & Nhúng (FOC)</a>
+        <a asp-action="Index" asp-route-role="AMR" class="btn btn-sm @(ViewBag.CurrentRole?.ToString().Contains("AMR") == true ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Hệ Thống Tự Hành (ROS 2)</a>
+        <a asp-action="Index" asp-route-role="Soft" class="btn btn-sm @(ViewBag.CurrentRole?.ToString().Contains("Soft") == true ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Soft Robotics & Biomimetics</a>
+    </div>
+
+    <!-- Members Grid -->
+    <div class="row g-4">
+        @foreach (var member in Model)
+        {
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 shadow-sm card-hover-effect d-flex flex-column text-center">
+                    <div class="position-relative mx-auto mb-3" style="width: 120px; height: 120px;">
+                        <img src="@member.AvatarUrl" class="rounded-circle object-fit-cover w-100 h-100 border border-2 border-cyan shadow" alt="@member.Name">
+                        <span class="position-absolute bottom-0 end-0 badge bg-darker text-cyan border border-secondary rounded-circle p-2">
+                            <i class="bi bi-patch-check-fill"></i>
+                        </span>
+                    </div>
+
+                    <h4 class="fw-bold text-light mb-1">@member.Name</h4>
+                    <p class="text-cyan fs-xs fw-semibold mb-1">@member.Role</p>
+                    <p class="text-secondary fs-xs mb-3 font-italic">@member.Title</p>
+
+                    <div class="p-2 bg-darker rounded-3 border border-secondary-subtle mb-3 text-start fs-xs">
+                        <div class="text-muted fw-bold mb-1"><i class="bi bi-lightbulb text-warning me-1"></i>Lĩnh vực chuyên sâu:</div>
+                        <span class="text-light">@member.Specialization</span>
+                    </div>
+
+                    <p class="text-secondary fs-sm leading-relaxed mb-4 flex-grow-1 text-start">
+                        @member.Bio
+                    </p>
+
+                    <div class="pt-3 border-top border-secondary mt-auto d-flex justify-content-between align-items-center">
+                        <a href="mailto:@member.Email" class="btn btn-xs btn-outline-secondary rounded-pill">
+                            <i class="bi bi-envelope me-1"></i> @member.Email.Split('@')[0]
+                        </a>
+                        <a asp-action="Detail" asp-route-id="@member.Id" class="btn btn-xs btn-outline-cyan rounded-pill px-3">
+                            Xem hồ sơ khoa học <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

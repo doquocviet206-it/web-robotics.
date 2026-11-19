@@ -1,0 +1,138 @@
+@model web_robotics.Models.ProjectItem
+@{
+    ViewData["Title"] = Model.Title;
+    var related = ViewBag.RelatedProjects as List<web_robotics.Models.ProjectItem> ?? new();
+}
+
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb fs-sm">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-cyan text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Projects" asp-action="Index" class="text-cyan text-decoration-none">Dự án Robot</a></li>
+            <li class="breadcrumb-item active text-secondary" aria-current="page">@Model.Title</li>
+        </ol>
+    </nav>
+
+    <div class="row g-5">
+        <!-- Main Project Content -->
+        <div class="col-lg-8">
+            <div class="position-relative rounded-4 overflow-hidden mb-4 shadow border border-secondary">
+                <img src="@Model.ImageUrl" class="w-100 object-fit-cover" style="max-height: 420px;" alt="@Model.Title">
+                <span class="position-absolute top-0 end-0 m-3 badge @(Model.IsCompletedProduct ? "bg-success" : "bg-warning text-dark") fs-sm px-3 py-2">
+                    @Model.Status
+                </span>
+            </div>
+
+            <div class="d-flex align-items-center gap-2 mb-2">
+                <span class="badge bg-darker text-cyan border border-secondary">@Model.Category</span>
+                <span class="badge bg-secondary-subtle text-light">Năm thực hiện: @Model.Year</span>
+            </div>
+
+            <h1 class="display-6 fw-bold text-light mb-3">@Model.Title</h1>
+
+            <div class="card bg-darker border-secondary-subtle p-3 rounded-3 mb-4">
+                <div class="fs-xs text-cyan fw-bold mb-1"><i class="bi bi-info-circle me-1"></i>Tóm tắt tổng quan:</div>
+                <p class="text-light fs-sm mb-0">@Model.ShortDescription</p>
+            </div>
+
+            <h4 class="fw-bold text-light mb-3 border-start border-3 border-cyan ps-2">Mô Tả Kỹ Thuật Chi Tiết</h4>
+            <div class="markdown-body mb-5">
+                <p>@Model.DetailedDescription</p>
+            </div>
+
+            <h4 class="fw-bold text-light mb-3 border-start border-3 border-cyan ps-2">Tính Năng & Đột Phá Kỹ Thuật</h4>
+            <div class="row g-3 mb-5">
+                @foreach (var feat in Model.KeyFeatures)
+                {
+                    <div class="col-md-6">
+                        <div class="card bg-dark-card border-secondary p-3 rounded-3 h-100">
+                            <div class="d-flex align-items-start gap-2">
+                                <i class="bi bi-check-circle-fill text-cyan fs-5 mt-1"></i>
+                                <span class="text-light fs-sm">@feat</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Q&A CTA for this project -->
+            <div class="card bg-darker border-secondary rounded-4 p-4 shadow-sm mb-4">
+                <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+                    <div>
+                        <h5 class="fw-bold text-light mb-1"><i class="bi bi-robot text-cyan me-2"></i>Bạn muốn tìm hiểu sâu về kỹ thuật của robot này?</h5>
+                        <p class="text-secondary fs-sm mb-0">Hỏi trực tiếp Trợ lý AI của Lab về giải thuật điều khiển, sơ đồ mạch hoặc cách cài đặt ROS 2.</p>
+                    </div>
+                    <button class="btn btn-cyan rounded-pill px-4" onclick="askPresetQuestion('Cho tôi biết thêm chi tiết về dự án @Model.Title')">
+                        Tra cứu với AI
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Specifications & Info -->
+        <div class="col-lg-4">
+            <div class="card bg-dark-card border-secondary rounded-4 p-4 mb-4 shadow">
+                <h5 class="fw-bold text-light mb-3 border-bottom border-secondary pb-2">
+                    <i class="bi bi-sliders me-2 text-cyan"></i>Thông Số Kỹ Thuật
+                </h5>
+
+                <div class="space-y-3 mb-4">
+                    <div>
+                        <span class="fs-xs text-muted d-block">Phân khúc / Lĩnh vực:</span>
+                        <strong class="text-light fs-sm">@Model.Category</strong>
+                    </div>
+                    <div>
+                        <span class="fs-xs text-muted d-block">Trạng thái:</span>
+                        <strong class="@(Model.IsCompletedProduct ? "text-success" : "text-warning") fs-sm">@Model.Status</strong>
+                    </div>
+                    <div>
+                        <span class="fs-xs text-muted d-block">Công nghệ / Tech Stack:</span>
+                        <span class="text-info fs-sm font-mono">@Model.TechStack</span>
+                    </div>
+                    <div>
+                        <span class="fs-xs text-muted d-block">Chủ nhiệm đề tài:</span>
+                        <strong class="text-light fs-sm">@Model.LeadResearcher</strong>
+                    </div>
+                </div>
+
+                <div class="bg-darker p-3 rounded-3 border border-secondary-subtle mb-4">
+                    <div class="fs-xs text-cyan fw-bold mb-1">Cấu hình phần cứng:</div>
+                    <div class="fs-xs text-light font-mono leading-relaxed">
+                        @Model.Specifications
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <a asp-controller="Docs" asp-action="Index" class="btn btn-outline-light rounded-pill btn-sm">
+                        <i class="bi bi-file-earmark-pdf me-1"></i> Tài liệu tích hợp (SDK/API)
+                    </a>
+                    <a asp-controller="Home" asp-action="Contact" class="btn btn-outline-cyan rounded-pill btn-sm">
+                        <i class="bi bi-hand-index-thumb me-1"></i> Liên hệ chuyển giao
+                    </a>
+                </div>
+            </div>
+
+            <!-- Related Projects -->
+            @if (related.Any())
+            {
+                <div class="card bg-dark-card border-secondary rounded-4 p-4 shadow">
+                    <h6 class="fw-bold text-light mb-3">Dự Án Liên Quan</h6>
+                    <div class="space-y-3">
+                        @foreach (var rel in related)
+                        {
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="@rel.ImageUrl" class="rounded-3 object-fit-cover" style="width: 60px; height: 60px;" alt="@rel.Title">
+                                <div>
+                                    <h6 class="fs-sm fw-bold mb-1">
+                                        <a asp-action="Detail" asp-route-id="@rel.Slug" class="text-light text-decoration-none hover-cyan">@rel.Title</a>
+                                    </h6>
+                                    <small class="text-secondary fs-xs">@rel.Category</small>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

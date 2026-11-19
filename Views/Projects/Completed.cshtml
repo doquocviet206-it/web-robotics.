@@ -1,0 +1,80 @@
+@model List<web_robotics.Models.ProjectItem>
+@{
+    ViewData["Title"] = "Sản Phẩm Đã Hoàn Thành & Chuyển Giao Công Nghệ";
+}
+
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb fs-sm">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-cyan text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Projects" asp-action="Index" class="text-cyan text-decoration-none">Dự án</a></li>
+            <li class="breadcrumb-item active text-secondary" aria-current="page">Sản phẩm hoàn thiện</li>
+        </ol>
+    </nav>
+
+    <div class="text-center max-w-2xl mx-auto mb-5">
+        <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1 rounded-pill mb-2">Production-Ready & Proven</span>
+        <h1 class="display-6 fw-bold text-light mb-2">Sản Phẩm Robot Đã Hoàn Thành</h1>
+        <p class="text-secondary fs-6">
+            Các sản phẩm cơ điện tử và robot hoàn thiện của RoboLab đã vượt qua các bài kiểm định thực tế khắt khe, đạt tiêu chuẩn công nghiệp và sẵn sàng chuyển giao công nghệ cho doanh nghiệp.
+        </p>
+    </div>
+
+    <div class="row g-4">
+        @foreach (var proj in Model)
+        {
+            <div class="col-12">
+                <div class="card bg-dark-card border-secondary rounded-4 overflow-hidden shadow-lg card-hover-effect">
+                    <div class="row g-0">
+                        <div class="col-lg-5">
+                            <img src="@proj.ImageUrl" class="img-fluid h-100 w-100 object-fit-cover" style="min-height: 280px;" alt="@proj.Title">
+                        </div>
+                        <div class="col-lg-7 p-4 p-md-5 d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge bg-success text-white px-3 py-1"><i class="bi bi-patch-check-fill me-1"></i>Sản phẩm hoàn thiện</span>
+                                <span class="badge bg-darker text-cyan border border-secondary">@proj.Category</span>
+                            </div>
+
+                            <h3 class="fw-bold text-light mb-2">@proj.Title</h3>
+                            <p class="text-secondary fs-sm leading-relaxed mb-3">@proj.ShortDescription</p>
+
+                            <div class="card bg-darker border-secondary-subtle p-3 rounded-3 mb-3">
+                                <div class="fs-xs text-muted mb-1 fw-bold text-uppercase"><i class="bi bi-sliders me-1 text-cyan"></i>Thông số kỹ thuật then chốt:</div>
+                                <div class="fs-sm text-light font-mono">@proj.Specifications</div>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="fs-xs text-cyan fw-bold mb-2">TÍNH NĂNG ĐẶC BIỆT:</div>
+                                <div class="row g-2">
+                                    @foreach (var feat in proj.KeyFeatures)
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="d-flex align-items-center gap-2 fs-xs text-secondary">
+                                                <i class="bi bi-check-circle-fill text-success"></i>
+                                                <span>@feat</span>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-wrap justify-content-between align-items-center pt-3 border-top border-secondary mt-auto">
+                                <div class="fs-xs text-secondary">
+                                    <i class="bi bi-people me-1"></i>Chủ nhiệm: <strong>@proj.LeadResearcher</strong>
+                                </div>
+                                <div class="d-flex gap-2 mt-2 mt-sm-0">
+                                    <a asp-action="Detail" asp-route-id="@proj.Slug" class="btn btn-sm btn-cyan rounded-pill px-4">
+                                        Xem chi tiết sản phẩm <i class="bi bi-arrow-right ms-1"></i>
+                                    </a>
+                                    <a asp-controller="Home" asp-action="Contact" class="btn btn-sm btn-outline-light rounded-pill px-3">
+                                        Liên hệ chuyển giao
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

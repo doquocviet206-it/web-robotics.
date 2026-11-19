@@ -1,0 +1,102 @@
+@model web_robotics.Models.KnowledgeArticle
+@{
+    ViewData["Title"] = Model.Title;
+    var related = ViewBag.RelatedArticles as List<web_robotics.Models.KnowledgeArticle> ?? new();
+}
+
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb fs-sm">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-cyan text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Knowledge" asp-action="Index" class="text-cyan text-decoration-none">Kiến thức Robot</a></li>
+            <li class="breadcrumb-item active text-secondary" aria-current="page">@Model.Title</li>
+        </ol>
+    </nav>
+
+    <div class="row g-5">
+        <!-- Main Article Content -->
+        <div class="col-lg-8">
+            <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle">@Model.Category</span>
+                <span class="badge bg-warning-subtle text-warning">@Model.Level</span>
+                <span class="badge bg-secondary-subtle text-light"><i class="bi bi-clock me-1"></i>@Model.ReadTimeMinutes phút đọc</span>
+            </div>
+
+            <h1 class="display-6 fw-bold text-light mb-3">@Model.Title</h1>
+
+            <div class="d-flex align-items-center gap-3 pb-3 mb-4 border-bottom border-secondary fs-sm text-secondary">
+                <div><i class="bi bi-person-fill text-cyan me-1"></i>Biên soạn: <strong class="text-light">@Model.Author</strong></div>
+                <div>&bull;</div>
+                <div><i class="bi bi-calendar-event me-1"></i>Cập nhật: @Model.PublishedDate</div>
+            </div>
+
+            <!-- Lead Summary Box -->
+            <div class="card bg-darker border-secondary-subtle p-4 rounded-4 mb-4">
+                <div class="fs-xs text-cyan fw-bold mb-1"><i class="bi bi-bookmark-star me-1"></i>Tóm lược kiến thức cốt lõi:</div>
+                <p class="text-secondary-emphasis fs-sm mb-0 leading-relaxed">@Model.Summary</p>
+            </div>
+
+            <!-- Content with MathJax/KaTeX & Code Blocks -->
+            <div class="markdown-body fs-6 mb-5">
+                @Html.Raw(Model.ContentMarkdown.Replace("\n", "<br/>"))
+            </div>
+
+            <!-- Article Tags -->
+            <div class="pt-3 border-top border-secondary mb-4">
+                <span class="fs-sm text-secondary me-2">Từ khóa liên quan:</span>
+                @foreach (var tag in Model.Tags)
+                {
+                    <a asp-action="Index" asp-route-search="@tag" class="badge bg-darker text-cyan border border-secondary text-decoration-none me-1 p-2">
+                        #@tag
+                    </a>
+                }
+            </div>
+
+            <!-- Feedback / AI Assistant Box -->
+            <div class="card bg-dark-card border-secondary rounded-4 p-4 shadow-sm mb-5">
+                <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+                    <div>
+                        <h5 class="fw-bold text-light mb-1"><i class="bi bi-robot text-cyan me-2"></i>Chưa hiểu rõ một phương trình hoặc thuật toán?</h5>
+                        <p class="text-secondary fs-sm mb-0">Hỏi ngay Trợ lý AI để giải thích chi tiết từng bước bằng ngôn ngữ trực quan.</p>
+                    </div>
+                    <button class="btn btn-cyan rounded-pill px-4" onclick="askPresetQuestion('Giải thích thêm về nội dung: @Model.Title')">
+                        Hỏi AI ngay
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Related -->
+        <div class="col-lg-4">
+            <div class="card bg-dark-card border-secondary rounded-4 p-4 mb-4 shadow">
+                <h5 class="fw-bold text-light mb-3 border-bottom border-secondary pb-2">
+                    <i class="bi bi-journal-bookmark me-2 text-cyan"></i>Bài Viết Liên Quan
+                </h5>
+
+                <div class="space-y-3">
+                    @foreach (var item in related)
+                    {
+                        <div class="p-3 bg-darker rounded-3 border border-secondary-subtle">
+                            <span class="badge bg-primary-subtle text-primary fs-xs mb-1">@item.Category</span>
+                            <h6 class="fs-sm fw-bold mb-1">
+                                <a asp-action="Detail" asp-route-id="@item.Slug" class="text-light text-decoration-none hover-cyan">
+                                    @item.Title
+                                </a>
+                            </h6>
+                            <small class="text-secondary fs-xs d-block mb-1">@item.Summary.Substring(0, Math.Min(item.Summary.Length, 70))...</small>
+                            <div class="fs-xs text-muted"><i class="bi bi-clock me-1"></i>@item.ReadTimeMinutes phút đọc</div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="card bg-dark-card border-secondary rounded-4 p-4 shadow">
+                <h6 class="fw-bold text-light mb-2"><i class="bi bi-download text-cyan me-2"></i>Tài Liệu Kèm Theo</h6>
+                <p class="text-secondary fs-xs mb-3">Tải bộ mã nguồn mẫu (C++ / Python) và file cấu hình URDF / Launch file liên quan đến bài viết này.</p>
+                <a asp-controller="Docs" asp-action="Index" class="btn btn-sm btn-outline-cyan rounded-pill w-100">
+                    Xem trung tâm tài liệu Lab
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

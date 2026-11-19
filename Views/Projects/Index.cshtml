@@ -1,0 +1,111 @@
+@model List<web_robotics.Models.ProjectItem>
+@{
+    ViewData["Title"] = "Dự Án Nghiên Cứu Robot & Hệ Thống Tự Hành";
+}
+
+<div class="container py-5">
+    <!-- Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 pb-2 border-bottom border-secondary">
+        <div>
+            <span class="badge bg-cyan-subtle text-cyan border border-info-subtle px-3 py-1 rounded-pill mb-2">R&D Portfolio</span>
+            <h1 class="display-6 fw-bold text-light mb-1">Các Dự Án Robot Của Phòng Thí Nghiệm</h1>
+            <p class="text-secondary fs-sm mb-0">Tổng hợp các mẫu robot tự hành, cánh tay thao tác, robot phỏng sinh học và drone</p>
+        </div>
+        <div class="mt-3 mt-md-0">
+            <a asp-action="Completed" class="btn btn-outline-success rounded-pill px-3">
+                <i class="bi bi-patch-check-fill me-1"></i> Xem Sản Phẩm Đã Hoàn Thành (@Model.Count(p => p.IsCompletedProduct))
+            </a>
+        </div>
+    </div>
+
+    <!-- Filter & Search Bar -->
+    <div class="card bg-dark-card border-secondary rounded-4 p-3 mb-4 shadow-sm">
+        <form method="get" class="row g-2 align-items-center">
+            <div class="col-md-4">
+                <div class="input-group">
+                    <span class="input-group-text bg-darker border-secondary text-secondary"><i class="bi bi-search"></i></span>
+                    <input type="text" name="search" class="form-control bg-darker border-secondary text-light" placeholder="Tìm theo tên robot, công nghệ..." value="@ViewBag.CurrentSearch">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <select name="category" class="form-select bg-darker border-secondary text-light" onchange="this.form.submit()">
+                    <option value="All" selected="@(ViewBag.CurrentCategory == "All")">-- Tất cả lĩnh vực --</option>
+                    <option value="Autonomous Mobile Robot" selected="@(ViewBag.CurrentCategory == "Autonomous Mobile Robot")">Xe tự hành (AMR)</option>
+                    <option value="Manipulator" selected="@(ViewBag.CurrentCategory == "Manipulator")">Cánh tay Robot</option>
+                    <option value="Quadruped" selected="@(ViewBag.CurrentCategory == "Quadruped")">Robot Bốn Chân</option>
+                    <option value="Humanoid" selected="@(ViewBag.CurrentCategory == "Humanoid")">Robot Hình Người</option>
+                    <option value="Drone" selected="@(ViewBag.CurrentCategory == "Drone")">Drone & UAV Nông Nghiệp</option>
+                    <option value="Medical" selected="@(ViewBag.CurrentCategory == "Medical")">Robot Y Tế</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-select bg-darker border-secondary text-light" onchange="this.form.submit()">
+                    <option value="All" selected="@(ViewBag.CurrentStatus == "All")">-- Tất cả trạng thái --</option>
+                    <option value="Đã hoàn thành" selected="@(ViewBag.CurrentStatus == "Đã hoàn thành")">Đã hoàn thành (Ready)</option>
+                    <option value="Đang nghiên cứu" selected="@(ViewBag.CurrentStatus == "Đang nghiên cứu")">Đang nghiên cứu (Active R&D)</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-cyan w-100 rounded-pill">Lọc kết quả</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Projects Grid -->
+    @if (!Model.Any())
+    {
+        <div class="alert alert-dark border-secondary text-center py-5 my-4">
+            <i class="bi bi-info-circle fs-2 text-cyan d-block mb-2"></i>
+            <h5>Không tìm thấy dự án phù hợp với bộ lọc hiện tại</h5>
+            <p class="text-secondary mb-3">Hãy thử tìm với từ khóa khác hoặc xóa bộ lọc.</p>
+            <a asp-action="Index" class="btn btn-sm btn-outline-cyan rounded-pill">Xóa bộ lọc</a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var proj in Model)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 bg-dark-card border-secondary rounded-4 shadow-sm overflow-hidden card-hover-effect d-flex flex-column">
+                        <div class="position-relative">
+                            <img src="@proj.ImageUrl" class="card-img-top object-fit-cover" style="height: 220px;" alt="@proj.Title">
+                            <span class="position-absolute top-0 end-0 m-3 badge @(proj.IsCompletedProduct ? "bg-success" : "bg-warning text-dark")">
+                                @proj.Status
+                            </span>
+                            <span class="position-absolute bottom-0 start-0 m-3 badge bg-darker text-cyan border border-secondary">
+                                @proj.Category
+                            </span>
+                        </div>
+                        <div class="card-body p-4 d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <small class="text-secondary">Năm: @proj.Year</small>
+                                @if (proj.IsCompletedProduct)
+                                {
+                                    <small class="text-success"><i class="bi bi-shield-check me-1"></i>Chuẩn công nghiệp</small>
+                                }
+                                else
+                                {
+                                    <small class="text-warning"><i class="bi bi-gear-wide me-1"></i>Nguyên mẫu R&D</small>
+                                }
+                            </div>
+                            <h5 class="fw-bold text-light mb-2">@proj.Title</h5>
+                            <p class="text-secondary fs-sm flex-grow-1">@proj.ShortDescription</p>
+                            
+                            <div class="pt-2 pb-3 border-top border-secondary-subtle fs-xs text-muted">
+                                <div><i class="bi bi-cpu me-1 text-cyan"></i><strong>Tech:</strong> @proj.TechStack</div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top border-secondary">
+                                <span class="fs-xs text-secondary"><i class="bi bi-person me-1"></i>@proj.LeadResearcher.Split(',')[0]</span>
+                                <a asp-action="Detail" asp-route-id="@proj.Slug" class="btn btn-sm btn-outline-cyan rounded-pill">
+                                    Chi tiết <i class="bi bi-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

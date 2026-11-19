@@ -1,0 +1,83 @@
+@{
+    ViewData["Title"] = "Liên Hệ & Hợp Tác Nghiên Cứu - RoboLab";
+}
+
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb fs-sm">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-cyan text-decoration-none">Trang chủ</a></li>
+            <li class="breadcrumb-item active text-secondary" aria-current="page">Liên hệ & Hợp tác</li>
+        </ol>
+    </nav>
+
+    <div class="row g-5">
+        <div class="col-lg-6">
+            <span class="badge bg-cyan-subtle text-cyan border border-info-subtle px-3 py-1 rounded-pill mb-3">Hợp Tác Công Nghệ</span>
+            <h1 class="display-6 fw-bold text-light mb-3">Chuyển Giao Công Nghệ & Tiếp Nhận Nghiên Cứu</h1>
+            <p class="text-secondary leading-relaxed mb-4">
+                Phòng thí nghiệm luôn mở rộng cánh cửa hợp tác với các viện nghiên cứu, trường đại học quốc tế và doanh nghiệp sản xuất công nghiệp trong và ngoài nước.
+            </p>
+
+            <div class="card bg-dark-card border-secondary rounded-4 p-4 mb-4">
+                <h5 class="fw-bold text-light mb-3"><i class="bi bi-geo-alt-fill text-cyan me-2"></i>Địa Chỉ Phòng Thí Nghiệm</h5>
+                <p class="text-secondary fs-sm mb-2">Tòa nhà Nghiên cứu Công nghệ cao R&D, Tầng 5 - 6, Khu Đô thị Đại học</p>
+                <p class="text-secondary fs-sm mb-2"><i class="bi bi-envelope-at me-2 text-cyan"></i>Email: <strong>contact@robotics-lab.edu.vn</strong></p>
+                <p class="text-secondary fs-sm mb-0"><i class="bi bi-telephone me-2 text-cyan"></i>Hotline: <strong>(+84) 024-3869-ROBO (7626)</strong></p>
+            </div>
+
+            <div class="card bg-dark-card border-secondary rounded-4 p-4">
+                <h5 class="fw-bold text-light mb-2"><i class="bi bi-mortarboard-fill text-cyan me-2"></i>Tuyển Sinh & Học Bổng NCS</h5>
+                <p class="text-secondary fs-sm mb-0">
+                    Lab liên tục cấp học bổng toàn phần cho ứng viên Thạc sĩ, Nghiên cứu sinh Tiến sĩ xuất sắc trong các chuyên ngành: Điều khiển Tự động, Robot di động, Computer Vision và Thiết kế Cơ điện tử.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card bg-dark-card border-secondary rounded-4 p-4 p-md-5 shadow-lg">
+                <h4 class="fw-bold text-light mb-2">Gửi Yêu Cầu Hợp Tác</h4>
+                <p class="text-secondary fs-sm mb-4">Điền thông tin bên dưới, Ban điều hành Lab sẽ phản hồi trong vòng 24 giờ làm việc.</p>
+                
+                <form onsubmit="alert('Cảm ơn bạn đã gửi thông tin liên hệ! Phòng Thí Nghiệm RoboLab sẽ phản hồi lại bạn sớm nhất.'); return false;">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label text-light fs-sm">Họ và tên *</label>
+                            <input type="text" class="form-control bg-darker border-secondary text-light" required placeholder="Nguyễn Văn A">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-light fs-sm">Đơn vị / Doanh nghiệp</label>
+                            <input type="text" class="form-control bg-darker border-secondary text-light" placeholder="Công ty / Trường ĐH...">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-light fs-sm">Email liên hệ *</label>
+                            <input type="email" class="form-control bg-darker border-secondary text-light" required placeholder="name@domain.com">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-light fs-sm">Số điện thoại</label>
+                            <input type="tel" class="form-control bg-darker border-secondary text-light" placeholder="0912 345 678">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label text-light fs-sm">Mục đích hợp tác</label>
+                            <select class="form-select bg-darker border-secondary text-light">
+                                <option>Chuyển giao công nghệ Robot tự hành (AMR / Cánh tay robot)</option>
+                                <option>Đăng ký ứng tuyển Học bổng Nghiên cứu sinh / Thạc sĩ</option>
+                                <option>Hợp tác đề tài nghiên cứu chung (Joint Research)</option>
+                                <option>Thăm quan thực tế phòng thí nghiệm</option>
+                                <option>Khác</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label text-light fs-sm">Nội dung chi tiết</label>
+                            <textarea class="form-control bg-darker border-secondary text-light" rows="4" placeholder="Mô tả nhu cầu kỹ thuật hoặc câu hỏi của bạn..."></textarea>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-cyan w-100 py-2 rounded-pill fw-semibold shadow">
+                                <i class="bi bi-send-fill me-1"></i> Gửi Thư Liên Hệ
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
