@@ -1,4 +1,26 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+(() => {
+    const storageKey = 'robolab-theme';
+    const root = document.documentElement;
 
-// Write your JavaScript code.
+    try {
+        const savedTheme = localStorage.getItem(storageKey);
+        if (savedTheme === 'light' || savedTheme === 'dark') {
+            root.dataset.bsTheme = savedTheme;
+        }
+    } catch {
+        // The page still supports switching themes when storage is unavailable.
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('theme-toggle')?.addEventListener('click', () => {
+            const theme = root.dataset.bsTheme === 'light' ? 'dark' : 'light';
+            root.dataset.bsTheme = theme;
+
+            try {
+                localStorage.setItem(storageKey, theme);
+            } catch {
+                // The theme has already been applied to the current page.
+            }
+        });
+    });
+})();

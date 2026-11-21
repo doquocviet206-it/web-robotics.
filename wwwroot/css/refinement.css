@@ -20,6 +20,8 @@ body.bg-dark { background: var(--bg-dark) !important; line-height: 1.65; }
 .navbar .nav-link > i { display: none; }
 .navbar .search-input { width: 180px; min-height: 44px; font-size: .8rem; }
 .navbar .btn { white-space: nowrap; }
+[data-bs-theme="dark"] .theme-choice-dark,
+[data-bs-theme="light"] .theme-choice-light { display: none; }
 .brand-icon-box { background: var(--cyan-accent); border-radius: 8px; }
 .text-gradient { background: none; -webkit-text-fill-color: currentColor; color: var(--cyan-accent); }
 .lab-hero { background: linear-gradient(120deg,#10232b 0%,#0c141b 70%); }
@@ -49,6 +51,62 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
 .skip-link { position: fixed; top: -100px; left: 16px; z-index: 2000; padding: 12px 20px; background: var(--cyan-accent); color: #081b16; }
 .skip-link:focus { top: 12px; }
 .btn-float-ai { right: 20px; bottom: max(20px,env(safe-area-inset-bottom)); }
+
+[data-bs-theme="light"] {
+    --bg-dark: #f5f8f8;
+    --bg-darker: #eaf1f2;
+    --bg-card: #fff;
+    --bg-card-hover: #f8fbfa;
+    --border-color: #cfdddf;
+    --border-highlight: #79a79f;
+    --text-primary: #14282e;
+    --text-secondary: #475e66;
+    --cyan-accent: #09695c;
+    --cyan-glow: rgba(9,105,92,.15);
+    --bs-body-color: var(--text-primary);
+    --bs-body-bg: var(--bg-dark);
+    --bs-secondary-color: var(--text-secondary);
+    --bs-primary-rgb: 29, 79, 169;
+    --bs-info-rgb: 15, 104, 127;
+    --bs-warning-rgb: 244, 193, 83;
+    --bs-success-rgb: 26, 117, 74;
+    --bs-danger-rgb: 167, 43, 60;
+}
+
+[data-bs-theme="light"] .bg-dark { background-color: var(--bg-dark) !important; }
+[data-bs-theme="light"] .bg-dark-canvas { background-color: var(--bg-darker) !important; }
+[data-bs-theme="light"] .text-light { color: var(--text-primary) !important; }
+[data-bs-theme="light"] .text-warning { color: #775108 !important; }
+[data-bs-theme="light"] .text-dark.bg-info { color: #fff !important; }
+[data-bs-theme="light"] .header-glass { background: rgba(255,255,255,.96); border-color: var(--border-color) !important; }
+[data-bs-theme="light"] .navbar .nav-link.active { background: #d9ede8; }
+[data-bs-theme="light"] .brand-icon-box { background: #c7eee4; color: var(--cyan-accent); }
+[data-bs-theme="light"] .hero-gradient { background: linear-gradient(120deg,#e0f0ed,var(--bg-dark) 75%); }
+[data-bs-theme="light"] .lab-hero .card,
+[data-bs-theme="light"] .card,
+[data-bs-theme="light"] .hero-stats-box { border-color: var(--border-color) !important; }
+[data-bs-theme="light"] .hero-stats-box .fs-1 { color: var(--text-primary) !important; }
+[data-bs-theme="light"] .lab-hero .card { box-shadow: 0 12px 40px rgba(20,40,46,.08); }
+[data-bs-theme="light"] .form-control::placeholder { color: var(--text-secondary); }
+[data-bs-theme="light"] .btn-cyan,
+[data-bs-theme="light"] .btn-primary,
+[data-bs-theme="light"] .btn-outline-cyan:hover,
+[data-bs-theme="light"] .skip-link,
+[data-bs-theme="light"] .social-icon:hover { color: #fff; }
+[data-bs-theme="light"] .btn-cyan:hover,
+[data-bs-theme="light"] .btn-primary:hover { background: #075448; border-color: #075448; }
+[data-bs-theme="light"] .btn-outline-secondary,
+[data-bs-theme="light"] .btn-outline-light { color: var(--text-primary); border-color: #6e868c; }
+[data-bs-theme="light"] .btn-outline-secondary:hover,
+[data-bs-theme="light"] .btn-outline-light:hover { background: var(--bg-darker); }
+[data-bs-theme="light"] .btn-outline-warning { color: #775108; border-color: #8c651c; }
+[data-bs-theme="light"] .btn-outline-warning:hover { background: #fff0cc; }
+[data-bs-theme="light"] .markdown-body { color: var(--text-primary); }
+[data-bs-theme="light"] .markdown-body pre { background: var(--bg-darker); border-color: var(--border-color); }
+[data-bs-theme="light"] .markdown-body th,
+[data-bs-theme="light"] .markdown-body td { border-color: var(--border-color); }
+[data-bs-theme="light"] .markdown-body th { background: var(--bg-darker); color: var(--cyan-accent); }
+
 @media (max-width: 1399.98px) {
     .navbar-collapse { padding-top: 16px; }
     .navbar .nav-link { padding: .75rem !important; }
@@ -58,6 +116,7 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
 @media (max-width: 575.98px) {
     .container { padding-left: 20px; padding-right: 20px; }
     .lab-hero > .container { padding-top: .5rem !important; }
+    .lab-hero .row.g-5 { --bs-gutter-x: 2rem; }
     .lab-hero h1 { font-size: 2.65rem; }
     .lab-hero .card-img-top { height: 230px !important; }
     .lab-hero .input-group .btn { padding-left: 12px !important; padding-right: 12px !important; }

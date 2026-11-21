@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="~/js/site.js" asp-append-version="true"></script>
     <title>@ViewData["Title"] - Phòng Thí Nghiệm Robotics & Trí Tuệ Nhân Tạo (RoboLab)</title>
     
     <!-- Google Fonts: Inter & JetBrains Mono -->
@@ -25,7 +26,7 @@
     <a class="skip-link" href="#main-content">Đến nội dung chính</a>
     <!-- Navbar Header -->
     <header class="sticky-top border-bottom border-secondary-subtle header-glass">
-        <nav class="navbar navbar-expand-xxl navbar-dark py-3">
+        <nav class="navbar navbar-expand-xxl py-3">
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center gap-2 fw-bold fs-4 text-gradient" asp-controller="Home" asp-action="Index">
                     <span class="brand-icon-box">
@@ -42,6 +43,9 @@
                 <div class="collapse navbar-collapse" id="mainNavbar">
                     <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-1 fw-medium">
                         <li class="nav-item">
+                            <a class="nav-link px-3 @(ViewContext.RouteData.Values["action"]?.ToString() == "About" ? "active" : "")" asp-controller="Home" asp-action="About">Về Lab</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link px-3 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" asp-controller="Home" asp-action="Index">
                                 <i class="bi bi-house-door me-1"></i> Trang chủ
                             </a>
@@ -50,7 +54,7 @@
                             <a class="nav-link dropdown-toggle px-3 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Projects" ? "active" : "")" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-gear-wide-connected me-1"></i> Dự án
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-dark shadow-lg border-secondary">
+                            <ul class="dropdown-menu shadow-lg border-secondary">
                                 <li><a class="dropdown-item" asp-controller="Projects" asp-action="Index"><i class="bi bi-grid me-2 text-info"></i>Tất cả dự án</a></li>
                                 <li><a class="dropdown-item" asp-controller="Projects" asp-action="Completed"><i class="bi bi-patch-check-fill me-2 text-success"></i>Sản phẩm đã hoàn thành</a></li>
                                 <li><hr class="dropdown-divider border-secondary"></li>
@@ -79,11 +83,6 @@
                                 <i class="bi bi-people me-1"></i> Thành viên
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link px-3 @(ViewContext.RouteData.Values["action"]?.ToString() == "About" ? "active" : "")" asp-controller="Home" asp-action="About">
-                                <i class="bi bi-info-circle me-1"></i> Về Lab
-                            </a>
-                        </li>
                     </ul>
                     
                     <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
@@ -96,8 +95,13 @@
                             </button>
                         </form>
 
-                        <button class="btn btn-sm btn-outline-cyan rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#aiAssistantModal">
-                            <i class="bi bi-robot me-1"></i> Trợ lý AI
+                        <button id="theme-toggle" type="button" class="btn btn-sm btn-outline-cyan rounded-pill px-3">
+                            <span class="theme-choice-light">
+                                <i class="bi bi-sun me-1" aria-hidden="true"></i><span class="visually-hidden">Chuyển sang giao diện </span>Sáng
+                            </span>
+                            <span class="theme-choice-dark">
+                                <i class="bi bi-moon-stars me-1" aria-hidden="true"></i><span class="visually-hidden">Chuyển sang giao diện </span>Tối
+                            </span>
                         </button>
                     </div>
                 </div>
@@ -132,7 +136,7 @@
                             <small class="text-secondary fs-xs">Hỗ trợ tra cứu kiến thức Robot, thuật toán SLAM, ROS 2, FOC & thông tin dự án</small>
                         </div>
                     </div>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
                 </div>
                 <div class="modal-body p-3 bg-dark-canvas" id="chatMessagesContainer" style="min-height: 380px; max-height: 480px; overflow-y: auto;">
                     <!-- Default Welcome Bot Message -->
@@ -270,7 +274,7 @@
             // Append User message
             const userHtml = `
                 <div class="chat-message user mb-3 text-end">
-                    <div class="d-inline-block bg-primary text-light px-3 py-2 rounded-4 text-start shadow-sm" style="max-width: 80%;">
+                    <div class="d-inline-block bg-primary text-white px-3 py-2 rounded-4 text-start shadow-sm" style="max-width: 80%;">
                         <div class="fw-semibold fs-xs text-white-50 mb-1"><i class="bi bi-person me-1"></i>Bạn</div>
                         <div>${escapeHtml(message)}</div>
                     </div>
