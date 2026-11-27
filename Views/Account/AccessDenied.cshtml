@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Không có quyền truy cập - RoboLab";
+}
+
+<div class="container py-5">
+    <div class="card bg-dark-card border-secondary rounded-4 p-5 text-center mx-auto" style="max-width: 560px;">
+        <i class="bi bi-shield-lock fs-1 text-warning mb-3"></i>
+        <h1 class="h3 fw-bold text-light mb-2">Không có quyền truy cập</h1>
+        <p class="text-secondary fs-sm mb-4">Tài khoản hiện tại không có quyền Quản trị viên (Admin) để thực hiện thao tác này.</p>
+        <div class="d-flex justify-content-center gap-2">
+            <a asp-controller="Account" asp-action="Login" class="btn btn-cyan rounded-pill px-4">Đăng nhập Admin</a>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">Về trang chủ</a>
+        </div>
+    </div>
+</div>

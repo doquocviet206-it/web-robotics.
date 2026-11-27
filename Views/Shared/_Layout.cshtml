@@ -29,22 +29,27 @@
         <nav class="navbar navbar-expand-xxl py-3">
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center gap-2 fw-bold fs-4 text-gradient" asp-controller="Home" asp-action="Index">
-                    <span class="brand-icon-box">
-                        <i class="bi bi-cpu-fill"></i>
+                    <span class="brand-icon-box" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="5" y="7" width="14" height="11" rx="3"></rect>
+                            <path d="M12 3v4"></path>
+                            <circle cx="12" cy="2.5" r="1"></circle>
+                            <circle cx="9.5" cy="12" r="1.2" fill="currentColor"></circle>
+                            <circle cx="14.5" cy="12" r="1.2" fill="currentColor"></circle>
+                            <path d="M9 15.5h6"></path>
+                            <path d="M2 12h3M19 12h3"></path>
+                        </svg>
                     </span>
                     <span>Robo<span class="text-cyan">Lab</span></span>
-                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle fs-xs ms-1">RESEARCH LAB</span>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle fs-xs ms-1">PHÒNG THÍ NGHIỆM</span>
                 </a>
                 
-                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Mở menu điều hướng">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 
                 <div class="collapse navbar-collapse" id="mainNavbar">
                     <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-1 fw-medium">
-                        <li class="nav-item">
-                            <a class="nav-link px-3 @(ViewContext.RouteData.Values["action"]?.ToString() == "About" ? "active" : "")" asp-controller="Home" asp-action="About">Về Lab</a>
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link px-3 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" asp-controller="Home" asp-action="Index">
                                 <i class="bi bi-house-door me-1"></i> Trang chủ
@@ -78,29 +83,24 @@
                                 <i class="bi bi-folder-symlink me-1"></i> Tài liệu
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link px-3 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Members" ? "active" : "")" asp-controller="Members" asp-action="Index">
-                                <i class="bi bi-people me-1"></i> Thành viên
-                            </a>
-                        </li>
                     </ul>
                     
                     <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
                         <!-- Quick Search Form -->
-                        <form class="d-flex position-relative me-2" asp-controller="Search" asp-action="Index" method="get">
+                        <form class="d-flex position-relative me-2 search-suggest-wrapper" asp-controller="Search" asp-action="Index" method="get">
                             <input class="form-control form-control-sm bg-darker text-light border-secondary pe-5 rounded-pill search-input" 
-                                   type="search" name="q" placeholder="Tra cứu kiến thức, robot..." aria-label="Tìm kiếm nội dung" />
+                                   type="search" name="q" placeholder="Tra cứu kiến thức, robot..." aria-label="Tìm kiếm nội dung" autocomplete="off" data-search-suggest="true" />
                             <button class="btn btn-sm text-secondary position-absolute end-0 top-50 translate-middle-y me-1 border-0" type="submit">
                                 <i class="bi bi-search text-cyan" aria-hidden="true"></i><span class="visually-hidden">Tìm kiếm</span>
                             </button>
                         </form>
 
-                        <button id="theme-toggle" type="button" class="btn btn-sm btn-outline-cyan rounded-pill px-3">
+                        <button id="theme-toggle" type="button" class="btn btn-sm btn-outline-cyan rounded-pill theme-toggle-btn" title="Đổi giao diện Sáng / Tối" aria-label="Đổi giao diện Sáng hoặc Tối">
                             <span class="theme-choice-light">
-                                <i class="bi bi-sun me-1" aria-hidden="true"></i><span class="visually-hidden">Chuyển sang giao diện </span>Sáng
+                                <i class="bi bi-sun fs-6" aria-hidden="true"></i><span class="visually-hidden">Chuyển sang giao diện Sáng</span>
                             </span>
                             <span class="theme-choice-dark">
-                                <i class="bi bi-moon-stars me-1" aria-hidden="true"></i><span class="visually-hidden">Chuyển sang giao diện </span>Tối
+                                <i class="bi bi-moon-stars fs-6" aria-hidden="true"></i><span class="visually-hidden">Chuyển sang giao diện Tối</span>
                             </span>
                         </button>
                     </div>
@@ -122,23 +122,23 @@
         </span>
     </button>
 
-    <!-- AI Assistant Modal Dialog -->
-    <div class="modal fade" id="aiAssistantModal" tabindex="-1" aria-labelledby="aiAssistantModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-            <div class="modal-content bg-dark border-secondary shadow-2xl">
-                <div class="modal-header border-secondary bg-darker py-3">
+    <!-- AI Assistant Modal Dialog (Corner Widget) -->
+    <div class="modal fade ai-corner-chat" id="aiAssistantModal" tabindex="-1" aria-labelledby="aiAssistantModalLabel" aria-hidden="true" data-bs-backdrop="false">
+        <div class="modal-dialog modal-dialog-scrollable ai-corner-dialog">
+            <div class="modal-content bg-dark border-secondary shadow-2xl rounded-4">
+                <div class="modal-header border-secondary bg-darker py-2 px-3">
                     <div class="d-flex align-items-center gap-2">
-                        <div class="brand-icon-box bg-cyan-subtle text-cyan">
+                        <div class="brand-icon-box bg-cyan-subtle text-cyan" style="width: 32px; height: 32px; font-size: 1rem;">
                             <i class="bi bi-robot"></i>
                         </div>
                         <div>
-                            <h5 class="modal-title fw-bold text-light mb-0" id="aiAssistantModalLabel">Trợ Lý Thông Minh Robotics Lab</h5>
-                            <small class="text-secondary fs-xs">Hỗ trợ tra cứu kiến thức Robot, thuật toán SLAM, ROS 2, FOC & thông tin dự án</small>
+                            <h6 class="modal-title fw-bold text-light mb-0" id="aiAssistantModalLabel">Trợ Lý Thông Minh RoboLab</h6>
+                            <small class="text-secondary" style="font-size: 0.7rem;">Hỏi về ROS 2, SLAM, FOC &amp; dự án</small>
                         </div>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
                 </div>
-                <div class="modal-body p-3 bg-dark-canvas" id="chatMessagesContainer" style="min-height: 380px; max-height: 480px; overflow-y: auto;">
+                <div class="modal-body p-3 bg-dark-canvas" id="chatMessagesContainer" style="min-height: 260px; max-height: 360px; overflow-y: auto;">
                     <!-- Default Welcome Bot Message -->
                     <div class="chat-message bot mb-3">
                         <div class="d-flex align-items-start gap-2">
@@ -239,12 +239,19 @@
             </div>
 
             <hr class="border-secondary mb-3">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center fs-xs text-secondary">
-                <div>&copy; 2026 Advanced Robotics & AI Research Laboratory (RoboLab). All Rights Reserved.</div>
-                <div class="d-flex gap-3 mt-2 mt-md-0">
-                    <a asp-controller="Home" asp-action="About" class="footer-link">Giới thiệu</a>
-                    <a asp-controller="Docs" asp-action="Index" class="footer-link">Quy chuẩn An toàn (SOP)</a>
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center fs-xs text-secondary gap-2">
+                <div>&copy; 2026 Phòng Thí Nghiệm Robotics &amp; Trí Tuệ Nhân Tạo (RoboLab).</div>
+                <div class="d-flex flex-wrap align-items-center gap-3">
+                    <a asp-controller="Docs" asp-action="Index" class="footer-link">Tài liệu &amp; Quy chuẩn (SOP)</a>
                     <a asp-controller="Home" asp-action="Contact" class="footer-link">Hợp tác Doanh nghiệp</a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-controller="Admin" asp-action="Index" class="footer-link text-cyan fw-semibold">Quản trị</a>
+                        <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-link p-0 footer-link fs-xs text-decoration-none">Đăng xuất</button>
+                        </form>
+                    }
                 </div>
             </div>
         </div>
@@ -259,6 +266,10 @@
     <!-- Custom Chatbot & Interaction JS -->
     <script>
         function askPresetQuestion(text) {
+            const modalEl = document.getElementById('aiAssistantModal');
+            if (modalEl && window.bootstrap) {
+                bootstrap.Modal.getOrCreateInstance(modalEl).show();
+            }
             document.getElementById('chatInput').value = text;
             sendChatMessage();
         }
@@ -330,7 +341,7 @@
                         <div class="d-flex align-items-start gap-2">
                             <div class="avatar-badge bg-info text-dark fw-bold rounded-circle"><i class="bi bi-cpu"></i></div>
                             <div class="message-bubble bg-darker border border-secondary p-3 rounded-4 shadow-sm text-light" style="max-width: 88%;">
-                                <div class="fw-semibold text-cyan fs-xs mb-1">RoboLab AI Assistant</div>
+                                <div class="fw-semibold text-cyan fs-xs mb-1">Trợ Lý AI RoboLab</div>
                                 <div class="message-content leading-relaxed fs-sm">${formatMarkdownText(data.reply)}</div>
                                 ${linksHtml}
                                 ${suggestionsHtml}

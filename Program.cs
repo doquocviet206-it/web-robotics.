@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using web_robotics.Data;
@@ -33,6 +34,14 @@ namespace web_robotics
             }
             builder.Services.AddScoped<Services.RoboticsDataService>();
             builder.Services.AddScoped<Services.RoboticsAssistantService>();
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/quan-tri-noi-bo/dang-nhap";
+                    options.AccessDeniedPath = "/quan-tri-noi-bo/tu-choi";
+                    options.ExpireTimeSpan = TimeSpan.FromHours(8);
+                });
+            builder.Services.AddAuthorization();
 
             var app = builder.Build();
 
@@ -52,6 +61,7 @@ namespace web_robotics
             app.UseStaticFiles();
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

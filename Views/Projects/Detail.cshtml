@@ -18,8 +18,8 @@
         <div class="col-lg-8">
             <div class="position-relative rounded-4 overflow-hidden mb-4 shadow border border-secondary">
                 <img src="@Model.ImageUrl" class="w-100 object-fit-cover" style="max-height: 420px;" alt="@Model.Title">
-                <span class="position-absolute top-0 end-0 m-3 badge @(Model.IsCompletedProduct ? "bg-success" : "bg-warning text-dark") fs-sm px-3 py-2">
-                    @Model.Status
+                <span class="position-absolute top-0 end-0 m-3 status-pill @(Model.IsCompletedProduct ? "status-pill-done" : "status-pill-active") fs-sm px-3 py-2">
+                    <span class="status-dot"></span>@Model.Status
                 </span>
             </div>
 

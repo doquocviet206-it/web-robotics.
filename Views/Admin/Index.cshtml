@@ -1,0 +1,534 @@
+@using web_robotics.Models
+@{
+    ViewData["Title"] = "Quản Trị Nội Dung - RoboLab";
+    var tab = (ViewBag.ActiveTab as string ?? "projects").ToLowerInvariant();
+    var projects = ViewBag.Projects as List<ProjectItem> ?? new();
+    var articles = ViewBag.Articles as List<KnowledgeArticle> ?? new();
+    var publications = ViewBag.Publications as List<ResearchPublication> ?? new();
+    var documents = ViewBag.Documents as List<LabDocGuide> ?? new();
+}
+
+<div class="container py-5">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 pb-3 border-bottom border-secondary">
+        <div>
+            <span class="status-pill status-pill-active mb-2"><span class="status-dot"></span> Quyền Quản Trị Viên</span>
+            <h1 class="h2 fw-bold text-light mb-1">Bảng Quản Trị Nội Dung RoboLab</h1>
+            <p class="text-secondary fs-sm mb-0">Thêm, chỉnh sửa và xóa Dự án, Bài viết kỹ thuật, Công bố khoa học và Tài liệu.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-sm btn-outline-secondary rounded-pill px-3">Xem trang chủ</a>
+            <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                    <i class="bi bi-box-arrow-right me-1"></i> Đăng xuất
+                </button>
+            </form>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success border-success-subtle fs-sm py-2 mb-4">
+            <i class="bi bi-check-circle me-1"></i> @TempData["Success"]
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger border-danger-subtle fs-sm py-2 mb-4">
+            <i class="bi bi-exclamation-triangle me-1"></i> @TempData["Error"]
+        </div>
+    }
+
+    <!-- Tabs -->
+    <div class="d-flex flex-wrap gap-2 mb-4">
+        <a asp-action="Index" asp-route-tab="projects" class="btn btn-sm @(tab == "projects" ? "btn-cyan" : "btn-outline-secondary") rounded-pill px-3">
+            Dự án (@projects.Count)
+        </a>
+        <a asp-action="Index" asp-route-tab="articles" class="btn btn-sm @(tab == "articles" ? "btn-cyan" : "btn-outline-secondary") rounded-pill px-3">
+            Kiến thức (@articles.Count)
+        </a>
+        <a asp-action="Index" asp-route-tab="publications" class="btn btn-sm @(tab == "publications" ? "btn-cyan" : "btn-outline-secondary") rounded-pill px-3">
+            Công bố (@publications.Count)
+        </a>
+        <a asp-action="Index" asp-route-tab="documents" class="btn btn-sm @(tab == "documents" ? "btn-cyan" : "btn-outline-secondary") rounded-pill px-3">
+            Tài liệu (@documents.Count)
+        </a>
+    </div>
+
+    @if (tab == "projects")
+    {
+        <div class="row g-4">
+            <div class="col-lg-5">
+                <div class="card bg-dark-card border-secondary rounded-4 p-4">
+                    <h5 class="fw-bold text-light mb-3" id="projectFormTitle">Thêm / Sửa Dự Án</h5>
+                    <form asp-action="SaveProject" method="post" id="projectForm">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="Id" id="proj-id" value="0" />
+                        <div class="mb-2">
+                            <label class="form-label fs-xs text-secondary">Tên dự án</label>
+                            <input type="text" name="Title" id="proj-title" class="form-control form-control-sm bg-darker border-secondary text-light" required />
+                        </div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <label class="form-label fs-xs text-secondary">Slug (để trống tự tạo)</label>
+                                <input type="text" name="Slug" id="proj-slug" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fs-xs text-secondary">Năm</label>
+                                <input type="number" name="Year" id="proj-year" value="2026" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                            </div>
+                        </div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <label class="form-label fs-xs text-secondary">Lĩnh vực</label>
+                                <input type="text" name="Category" id="proj-category" value="Autonomous Mobile Robot" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fs-xs text-secondary">Trạng thái</label>
+                                <select name="Status" id="proj-status" class="form-select form-select-sm bg-darker border-secondary text-light">
+                                    <option value="Đã hoàn thành">Đã hoàn thành</option>
+                                    <option value="Đang nghiên cứu">Đang nghiên cứu</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label fs-xs text-secondary">Công nghệ sử dụng</label>
+                            <input type="text" name="TechStack" id="proj-tech" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label fs-xs text-secondary">Chủ nhiệm đề tài</label>
+                            <input type="text" name="LeadResearcher" id="proj-lead" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label fs-xs text-secondary">Đường dẫn ảnh</label>
+                            <input type="text" name="ImageUrl" id="proj-img" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label fs-xs text-secondary">Mô tả ngắn</label>
+                            <textarea name="ShortDescription" id="proj-short" rows="2" class="form-control form-control-sm bg-darker border-secondary text-light"></textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label fs-xs text-secondary">Thông số kỹ thuật</label>
+                            <textarea name="Specifications" id="proj-spec" rows="2" class="form-control form-control-sm bg-darker border-secondary text-light"></textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label fs-xs text-secondary">Mô tả chi tiết</label>
+                            <textarea name="DetailedDescription" id="proj-detail" rows="3" class="form-control form-control-sm bg-darker border-secondary text-light"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fs-xs text-secondary">Tính năng nổi bật (mỗi dòng 1 ý)</label>
+                            <textarea name="keyFeaturesText" id="proj-features" rows="2" class="form-control form-control-sm bg-darker border-secondary text-light"></textarea>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-sm btn-cyan rounded-pill px-4">Lưu dự án</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="resetProjectForm()">Làm mới</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="card bg-dark-card border-secondary rounded-4 p-4">
+                    <h5 class="fw-bold text-light mb-3">Danh sách Dự án</h5>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover align-middle fs-sm mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Tên dự án</th>
+                                    <th>Trạng thái</th>
+                                    <th class="text-end">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var p in projects)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="fw-semibold text-light">@p.Title</div>
+                                            <small class="text-secondary">@p.Category · @p.Year</small>
+                                        </td>
+                                        <td>
+                                            <span class="status-pill @(p.IsCompletedProduct ? "status-pill-done" : "status-pill-active")">
+                                                <span class="status-dot"></span>@p.Status
+                                            </span>
+                                        </td>
+                                        <td class="text-end text-nowrap">
+                                            <button type="button" class="btn btn-xs btn-outline-cyan rounded-pill me-1"
+                                                    onclick='editProject(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(p)))'>Sửa</button>
+                                            <form asp-action="DeleteProject" method="post" class="d-inline" onsubmit="return confirm('Xóa dự án này?');">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@p.Id" />
+                                                <button type="submit" class="btn btn-xs btn-outline-danger rounded-pill">Xóa</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else if (tab == "articles")
+    {
+        <div class="row g-4">
+            <div class="col-lg-5">
+                <div class="card bg-dark-card border-secondary rounded-4 p-4">
+                    <h5 class="fw-bold text-light mb-3">Thêm / Sửa Bài Viết Kiến Thức</h5>
+                    <form asp-action="SaveArticle" method="post" id="articleForm">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="Id" id="art-id" value="0" />
+                        <div class="mb-2">
+                            <label class="form-label fs-xs text-secondary">Tiêu đề</label>
+                            <input type="text" name="Title" id="art-title" class="form-control form-control-sm bg-darker border-secondary text-light" required />
+                        </div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <label class="form-label fs-xs text-secondary">Slug</label>
+                                <input type="text" name="Slug" id="art-slug" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fs-xs text-secondary">Thời gian đọc (phút)</label>
+                                <input type="number" name="ReadTimeMinutes" id="art-readtime" value="8" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                            </div>
+                        </div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <label class="form-label fs-xs text-secondary">Chủ đề</label>
+                                <input type="text" name="Category" id="art-cat" value="ROS / ROS 2" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fs-xs text-secondary">Cấp độ</label>
+                                <select name="Level" id="art-level" class="form-select form-select-sm bg-darker border-secondary text-light">
+                                    <option value="Cơ bản">Cơ bản</option>
+                                    <option value="Trung cấp">Trung cấp</option>
+                                    <option value="Nâng cao">Nâng cao</option>
+                                    <option value="Chuyên sâu">Chuyên sâu</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <label class="form-label fs-xs text-secondary">Tác giả</label>
+                                <input type="text" name="Author" id="art-author" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fs-xs text-secondary">Ngày đăng (dd/MM/yyyy)</label>
+                                <input type="text" name="PublishedDate" id="art-date" value="@DateTime.Now.ToString("dd/MM/yyyy")" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label fs-xs text-secondary">Thẻ (phân cách bằng dấu phẩy)</label>
+                            <input type="text" name="tagsText" id="art-tags" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label fs-xs text-secondary">Tóm tắt</label>
+                            <textarea name="Summary" id="art-summary" rows="2" class="form-control form-control-sm bg-darker border-secondary text-light"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fs-xs text-secondary">Nội dung Markdown</label>
+                            <textarea name="ContentMarkdown" id="art-content" rows="4" class="form-control form-control-sm bg-darker border-secondary text-light"></textarea>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-sm btn-cyan rounded-pill px-4">Lưu bài viết</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="resetArticleForm()">Làm mới</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="card bg-dark-card border-secondary rounded-4 p-4">
+                    <h5 class="fw-bold text-light mb-3">Danh sách Bài viết</h5>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover align-middle fs-sm mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Tiêu đề</th>
+                                    <th>Cấp độ</th>
+                                    <th class="text-end">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var a in articles)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="fw-semibold text-light">@a.Title</div>
+                                            <small class="text-secondary">@a.Category · @a.PublishedDate</small>
+                                        </td>
+                                        <td><span class="badge bg-secondary-subtle text-warning">@a.Level</span></td>
+                                        <td class="text-end text-nowrap">
+                                            <button type="button" class="btn btn-xs btn-outline-cyan rounded-pill me-1"
+                                                    onclick='editArticle(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(a)))'>Sửa</button>
+                                            <form asp-action="DeleteArticle" method="post" class="d-inline" onsubmit="return confirm('Xóa bài viết này?');">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@a.Id" />
+                                                <button type="submit" class="btn btn-xs btn-outline-danger rounded-pill">Xóa</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else if (tab == "publications")
+    {
+        <div class="row g-4">
+            <div class="col-lg-5">
+                <div class="card bg-dark-card border-secondary rounded-4 p-4">
+                    <h5 class="fw-bold text-light mb-3">Thêm / Sửa Công Bố Khoa Học</h5>
+                    <form asp-action="SavePublication" method="post" id="pubForm">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="Id" id="pub-id" value="0" />
+                        <div class="mb-2">
+                            <label class="form-label fs-xs text-secondary">Tiêu đề bài báo</label>
+                            <input type="text" name="Title" id="pub-title" class="form-control form-control-sm bg-darker border-secondary text-light" required />
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label fs-xs text-secondary">Tác giả</label>
+                            <input type="text" name="Authors" id="pub-authors" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label fs-xs text-secondary">Tạp chí / Hội nghị</label>
+                            <input type="text" name="JournalOrConference" id="pub-journal" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                        </div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-4">
+                                <label class="form-label fs-xs text-secondary">Năm</label>
+                                <input type="number" name="Year" id="pub-year" value="2025" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                            </div>
+                            <div class="col-8">
+                                <label class="form-label fs-xs text-secondary">Xếp hạng</label>
+                                <input type="text" name="CitationRank" id="pub-rank" value="Q1 / IEEE" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                            </div>
+                        </div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <label class="form-label fs-xs text-secondary">Lĩnh vực</label>
+                                <input type="text" name="Category" id="pub-cat" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fs-xs text-secondary">DOI</label>
+                                <input type="text" name="Doi" id="pub-doi" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label fs-xs text-secondary">Liên kết bài báo</label>
+                            <input type="text" name="PaperUrl" id="pub-url" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fs-xs text-secondary">Tóm tắt</label>
+                            <textarea name="Abstract" id="pub-abstract" rows="3" class="form-control form-control-sm bg-darker border-secondary text-light"></textarea>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-sm btn-cyan rounded-pill px-4">Lưu công bố</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="resetPubForm()">Làm mới</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="card bg-dark-card border-secondary rounded-4 p-4">
+                    <h5 class="fw-bold text-light mb-3">Danh sách Công bố</h5>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover align-middle fs-sm mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Tiêu đề</th>
+                                    <th>Năm</th>
+                                    <th class="text-end">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var pub in publications)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="fw-semibold text-light">@pub.Title</div>
+                                            <small class="text-secondary">@pub.Authors</small>
+                                        </td>
+                                        <td>@pub.Year</td>
+                                        <td class="text-end text-nowrap">
+                                            <button type="button" class="btn btn-xs btn-outline-cyan rounded-pill me-1"
+                                                    onclick='editPub(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(pub)))'>Sửa</button>
+                                            <form asp-action="DeletePublication" method="post" class="d-inline" onsubmit="return confirm('Xóa công bố này?');">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@pub.Id" />
+                                                <button type="submit" class="btn btn-xs btn-outline-danger rounded-pill">Xóa</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            <div class="col-lg-5">
+                <div class="card bg-dark-card border-secondary rounded-4 p-4">
+                    <h5 class="fw-bold text-light mb-3">Thêm / Sửa Tài Liệu</h5>
+                    <form asp-action="SaveDocument" method="post" id="docForm">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="Id" id="doc-id" value="0" />
+                        <div class="mb-2">
+                            <label class="form-label fs-xs text-secondary">Tên tài liệu</label>
+                            <input type="text" name="Title" id="doc-title" class="form-control form-control-sm bg-darker border-secondary text-light" required />
+                        </div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <label class="form-label fs-xs text-secondary">Phân loại</label>
+                                <input type="text" name="Category" id="doc-cat" value="Quy chuẩn An toàn (SOP)" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fs-xs text-secondary">Phiên bản</label>
+                                <input type="text" name="Version" id="doc-ver" value="v1.0" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                            </div>
+                        </div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <label class="form-label fs-xs text-secondary">Kích thước / Định dạng</label>
+                                <input type="text" name="FileSize" id="doc-size" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fs-xs text-secondary">Đối tượng áp dụng</label>
+                                <input type="text" name="TargetAudience" id="doc-aud" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label fs-xs text-secondary">Đường dẫn tải</label>
+                            <input type="text" name="DownloadOrViewUrl" id="doc-url" value="#" class="form-control form-control-sm bg-darker border-secondary text-light" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fs-xs text-secondary">Mô tả</label>
+                            <textarea name="Description" id="doc-desc" rows="3" class="form-control form-control-sm bg-darker border-secondary text-light"></textarea>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-sm btn-cyan rounded-pill px-4">Lưu tài liệu</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="resetDocForm()">Làm mới</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="card bg-dark-card border-secondary rounded-4 p-4">
+                    <h5 class="fw-bold text-light mb-3">Danh sách Tài liệu</h5>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover align-middle fs-sm mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Tên tài liệu</th>
+                                    <th>Phiên bản</th>
+                                    <th class="text-end">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var d in documents)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="fw-semibold text-light">@d.Title</div>
+                                            <small class="text-secondary">@d.Category · @d.FileSize</small>
+                                        </td>
+                                        <td>@d.Version</td>
+                                        <td class="text-end text-nowrap">
+                                            <button type="button" class="btn btn-xs btn-outline-cyan rounded-pill me-1"
+                                                    onclick='editDoc(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(d)))'>Sửa</button>
+                                            <form asp-action="DeleteDocument" method="post" class="d-inline" onsubmit="return confirm('Xóa tài liệu này?');">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@d.Id" />
+                                                <button type="submit" class="btn btn-xs btn-outline-danger rounded-pill">Xóa</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+<script>
+    function editProject(p) {
+        document.getElementById('proj-id').value = p.Id;
+        document.getElementById('proj-title').value = p.Title || '';
+        document.getElementById('proj-slug').value = p.Slug || '';
+        document.getElementById('proj-year').value = p.Year || 2026;
+        document.getElementById('proj-category').value = p.Category || '';
+        document.getElementById('proj-status').value = p.Status || 'Đã hoàn thành';
+        document.getElementById('proj-tech').value = p.TechStack || '';
+        document.getElementById('proj-lead').value = p.LeadResearcher || '';
+        document.getElementById('proj-img').value = p.ImageUrl || '';
+        document.getElementById('proj-short').value = p.ShortDescription || '';
+        document.getElementById('proj-spec').value = p.Specifications || '';
+        document.getElementById('proj-detail').value = p.DetailedDescription || '';
+        document.getElementById('proj-features').value = (p.KeyFeatures || []).join('\n');
+    }
+    function resetProjectForm() {
+        document.getElementById('projectForm').reset();
+        document.getElementById('proj-id').value = 0;
+    }
+
+    function editArticle(a) {
+        document.getElementById('art-id').value = a.Id;
+        document.getElementById('art-title').value = a.Title || '';
+        document.getElementById('art-slug').value = a.Slug || '';
+        document.getElementById('art-readtime').value = a.ReadTimeMinutes || 8;
+        document.getElementById('art-cat').value = a.Category || '';
+        document.getElementById('art-level').value = a.Level || 'Cơ bản';
+        document.getElementById('art-author').value = a.Author || '';
+        document.getElementById('art-date').value = a.PublishedDate || '';
+        document.getElementById('art-tags').value = (a.Tags || []).join(', ');
+        document.getElementById('art-summary').value = a.Summary || '';
+        document.getElementById('art-content').value = a.ContentMarkdown || '';
+    }
+    function resetArticleForm() {
+        document.getElementById('articleForm').reset();
+        document.getElementById('art-id').value = 0;
+    }
+
+    function editPub(p) {
+        document.getElementById('pub-id').value = p.Id;
+        document.getElementById('pub-title').value = p.Title || '';
+        document.getElementById('pub-authors').value = p.Authors || '';
+        document.getElementById('pub-journal').value = p.JournalOrConference || '';
+        document.getElementById('pub-year').value = p.Year || 2025;
+        document.getElementById('pub-rank').value = p.CitationRank || '';
+        document.getElementById('pub-cat').value = p.Category || '';
+        document.getElementById('pub-doi').value = p.Doi || '';
+        document.getElementById('pub-url').value = p.PaperUrl || '';
+        document.getElementById('pub-abstract').value = p.Abstract || '';
+    }
+    function resetPubForm() {
+        document.getElementById('pubForm').reset();
+        document.getElementById('pub-id').value = 0;
+    }
+
+    function editDoc(d) {
+        document.getElementById('doc-id').value = d.Id;
+        document.getElementById('doc-title').value = d.Title || '';
+        document.getElementById('doc-cat').value = d.Category || '';
+        document.getElementById('doc-ver').value = d.Version || '';
+        document.getElementById('doc-size').value = d.FileSize || '';
+        document.getElementById('doc-aud').value = d.TargetAudience || '';
+        document.getElementById('doc-url').value = d.DownloadOrViewUrl || '';
+        document.getElementById('doc-desc').value = d.Description || '';
+    }
+    function resetDocForm() {
+        document.getElementById('docForm').reset();
+        document.getElementById('doc-id').value = 0;
+    }
+</script>
+}

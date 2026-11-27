@@ -568,18 +568,15 @@ Tiêu chuẩn này quy định các yêu cầu kỹ thuật tối thiểu để 
             var projects = GetProjects();
             var publications = GetPublications();
             var articles = GetKnowledgeArticles();
-            var members = GetMembers();
 
             return new LabOverviewViewModel
             {
                 TotalProjects = projects.Count,
                 CompletedProducts = projects.Count(p => p.IsCompletedProduct),
                 ActivePublications = publications.Count,
-                MembersCount = members.Count,
                 FeaturedProjects = projects.Take(3).ToList(),
                 RecentPublications = publications.Take(3).ToList(),
-                LatestArticles = articles.Take(3).ToList(),
-                CoreMembers = members.Take(4).ToList()
+                LatestArticles = articles.Take(3).ToList()
             };
         }
     }

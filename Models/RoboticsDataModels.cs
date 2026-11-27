@@ -77,10 +77,8 @@ namespace web_robotics.Models
         public int TotalProjects { get; set; }
         public int CompletedProducts { get; set; }
         public int ActivePublications { get; set; }
-        public int MembersCount { get; set; }
         public List<ProjectItem> FeaturedProjects { get; set; } = new();
         public List<ResearchPublication> RecentPublications { get; set; } = new();
         public List<KnowledgeArticle> LatestArticles { get; set; } = new();
-        public List<LabMember> CoreMembers { get; set; } = new();
     }
 }

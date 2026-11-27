@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using web_robotics.Services;
 
 namespace web_robotics.Controllers
@@ -17,9 +16,7 @@ namespace web_robotics.Controllers
 
         public IActionResult About()
         {
-            var members = _data.GetMembers();
-            ViewBag.Members = members;
-            return View();
+            return RedirectToAction(nameof(Index), null, null, "about-lab");
         }
 
         public IActionResult Contact()

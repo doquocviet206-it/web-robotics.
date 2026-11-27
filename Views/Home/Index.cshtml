@@ -9,8 +9,10 @@
         <div class="row align-items-center g-5">
             <div class="col-lg-7">
                 <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-cyan-subtle text-cyan border border-info-subtle fs-sm mb-3">
-                    <i class="bi bi-stars"></i>
-                    <span>ROBOTICS · AI · ENGINEERING</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                    <span>ROBOTICS · TRÍ TUỆ NHÂN TẠO · KỸ THUẬT</span>
                 </div>
                 <h1 class="display-4 fw-extrabold text-light mb-3 lh-sm">
                     Từ ý tưởng đến <br/>
@@ -21,45 +23,75 @@
                 </p>
                 <div class="d-flex flex-wrap gap-3">
                     <a asp-controller="Projects" asp-action="Index" class="btn btn-cyan px-4 py-2 rounded-pill fw-semibold shadow">
-                        <i class="bi bi-box-seam me-2"></i> Khám phá dự án
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-1" aria-hidden="true">
+                            <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                            <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                            <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+                            <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+                        </svg>
+                        Khám phá dự án
                     </a>
                     <a asp-controller="Knowledge" asp-action="Index" class="btn btn-outline-light px-4 py-2 rounded-pill fw-medium">
-                        <i class="bi bi-journal-text me-2"></i> Đọc kiến thức Robot
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-1" aria-hidden="true">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                        Đọc kiến thức Robot
                     </a>
-                    <button class="btn btn-outline-cyan px-4 py-2 rounded-pill" data-bs-toggle="modal" data-bs-target="#aiAssistantModal">
-                        <i class="bi bi-chat-dots-fill me-1"></i> Tra cứu AI Lab
-                    </button>
                 </div>
 
                 <!-- Live Quick Search Pill -->
                 <div class="mt-4 pt-3">
-                    <form class="input-group shadow-lg" asp-controller="Search" asp-action="Index" method="get" style="max-width: 580px;">
+                    <form class="input-group shadow-lg position-relative search-suggest-wrapper" asp-controller="Search" asp-action="Index" method="get" style="max-width: 580px;">
                         <span class="input-group-text bg-darker border-secondary text-cyan"><i class="bi bi-search"></i></span>
-                        <input type="text" name="q" class="form-control bg-darker border-secondary text-light py-2" aria-label="Tìm kiếm kiến thức và dự án" placeholder="Tìm ROS 2, SLAM, AeroBot...">
+                        <input type="text" name="q" class="form-control bg-darker border-secondary text-light py-2" aria-label="Tìm kiếm kiến thức và dự án" placeholder="Tìm ROS 2, SLAM, AeroBot..." autocomplete="off" data-search-suggest="true">
                         <button class="btn btn-primary px-4 fw-medium" type="submit">Tìm kiếm</button>
                     </form>
                 </div>
             </div>
 
             <div class="col-lg-5">
-                <!-- Highlight Hero Graphic Box -->
-                <div class="position-relative">
-                    <div class="card bg-dark-card border-secondary rounded-4 shadow-2xl overflow-hidden card-hover-effect">
-                        <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=80" class="card-img-top object-fit-cover" style="height: 260px;" alt="Robotics Research">
-                        <div class="card-body p-4">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">Sản phẩm tiêu biểu</span>
-                                <small class="text-secondary"><i class="bi bi-check2-circle text-success me-1"></i>Đã ứng dụng thực tế</small>
-                            </div>
-                            <h5 class="fw-bold text-light mb-1">AeroBot-AMR 500: Xe Tự Hành Kho</h5>
-                            <p class="text-secondary fs-sm mb-3">Tải trọng 500kg, điều hướng 3D LiDAR SLAM, hệ thống an toàn kép đạt chuẩn ISO 3691-4.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="badge bg-secondary-subtle text-info">ROS 2 Humble / Cartographer</span>
-                                <a asp-controller="Projects" asp-action="Detail" asp-route-id="aerobot-amr-500" class="btn btn-sm btn-outline-cyan rounded-pill">
-                                    Chi tiết <i class="bi bi-arrow-right ms-1"></i>
-                                </a>
-                            </div>
+                <!-- Highlight Hero Carousel -->
+                <div class="position-relative hero-carousel-wrap">
+                    <div id="heroFeaturedCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+                        <div class="carousel-inner rounded-4">
+                            @for (int i = 0; i < Model.FeaturedProjects.Count; i++)
+                            {
+                                var proj = Model.FeaturedProjects[i];
+                                <div class="carousel-item @(i == 0 ? "active" : "")">
+                                    <a asp-controller="Projects" asp-action="Detail" asp-route-id="@proj.Slug" class="card bg-dark-card border-secondary rounded-4 shadow-2xl overflow-hidden card-hover-effect text-decoration-none d-block">
+                                        <img src="@proj.ImageUrl" class="card-img-top object-fit-cover" style="height: 260px;" alt="@proj.Title">
+                                        <div class="card-body p-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span class="status-pill @(proj.IsCompletedProduct ? "status-pill-done" : "status-pill-active")">
+                                                    <span class="status-dot"></span>@(proj.IsCompletedProduct ? "Sản phẩm tiêu biểu" : "Dự án R&D")
+                                                </span>
+                                                <small class="text-secondary">@proj.Status</small>
+                                            </div>
+                                            <h5 class="fw-bold text-light mb-1">@proj.Title</h5>
+                                            <p class="text-secondary fs-sm mb-0 line-clamp-2">@proj.ShortDescription</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            }
                         </div>
+
+                        @if (Model.FeaturedProjects.Count > 1)
+                        {
+                            <button class="hero-carousel-arrow prev" type="button" data-bs-target="#heroFeaturedCarousel" data-bs-slide="prev" aria-label="Nội dung trước">
+                                <i class="bi bi-chevron-left" aria-hidden="true"></i>
+                            </button>
+                            <button class="hero-carousel-arrow next" type="button" data-bs-target="#heroFeaturedCarousel" data-bs-slide="next" aria-label="Nội dung tiếp theo">
+                                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                            </button>
+
+                            <div class="carousel-indicators hero-carousel-dots position-static mt-3 mb-0">
+                                @for (int i = 0; i < Model.FeaturedProjects.Count; i++)
+                                {
+                                    <button type="button" data-bs-target="#heroFeaturedCarousel" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-current="@(i == 0 ? "true" : "false")" aria-label="Chuyển tới mục @(i + 1)"></button>
+                                }
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -67,28 +99,110 @@
 
         <!-- Metric Counter Strip -->
         <div class="row g-3 mt-4 pt-2">
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-4">
                 <div class="hero-stats-box text-center">
                     <div class="fs-1 fw-bold text-cyan">@Model.TotalProjects</div>
                     <div class="text-secondary fs-sm fw-medium">Dự án Robot R&D</div>
                 </div>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-4">
                 <div class="hero-stats-box text-center">
                     <div class="fs-1 fw-bold text-success">@Model.CompletedProducts</div>
                     <div class="text-secondary fs-sm fw-medium">Sản phẩm Hoàn thiện</div>
                 </div>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col-12 col-md-4">
                 <div class="hero-stats-box text-center">
                     <div class="fs-1 fw-bold text-warning">@Model.ActivePublications</div>
                     <div class="text-secondary fs-sm fw-medium">Bài báo IEEE / Q1</div>
                 </div>
             </div>
-            <div class="col-6 col-md-3">
-                <div class="hero-stats-box text-center">
-                    <div class="fs-1 fw-bold text-primary">@Model.MembersCount</div>
-                    <div class="text-secondary fs-sm fw-medium">Nhà Khoa Học & Kỹ Sư</div>
+        </div>
+    </div>
+</section>
+
+<!-- Về Phòng Thí Nghiệm (Merged from About) -->
+<section id="about-lab" class="py-5 bg-darker border-top border-secondary-subtle">
+    <div class="container py-3">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
+            <div>
+                <span class="text-cyan fw-bold text-uppercase fs-xs tracking-wider">Về Phòng Thí Nghiệm</span>
+                <h2 class="fw-bold text-light mb-1">Hướng Nghiên Cứu &amp; Cơ Sở Vật Chất RoboLab</h2>
+                <p class="text-secondary mb-0 fs-sm">Thành lập từ năm 2015, kết hợp điều khiển tự động kinh điển, cơ khí chính xác và trí tuệ nhân tạo.</p>
+            </div>
+            <div class="mt-3 mt-md-0">
+                <a asp-controller="Docs" asp-action="Index" class="btn btn-sm btn-outline-cyan rounded-pill px-3">
+                    Tài liệu &amp; Quy chuẩn Lab (SOP) <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 card-hover-effect">
+                    <div class="brand-icon-box mb-3" style="width: 44px; height: 44px;" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="7" cy="17" r="2"></circle>
+                            <circle cx="17" cy="17" r="2"></circle>
+                            <path d="M5 17H3v-6l2-5h9l4 5h3v6h-2"></path>
+                            <path d="M9 17h6"></path>
+                        </svg>
+                    </div>
+                    <h6 class="fw-bold text-light mb-2">Robot Tự Hành (AMR)</h6>
+                    <p class="text-secondary fs-xs mb-0">Xe tự hành kho xưởng, Cartographer LiDAR SLAM, điều hướng Nav2 và điều phối đội xe.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 card-hover-effect">
+                    <div class="brand-icon-box mb-3" style="width: 44px; height: 44px;" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                        </svg>
+                    </div>
+                    <h6 class="fw-bold text-light mb-2">Cánh Tay Robot 7-DoF</h6>
+                    <p class="text-secondary fs-xs mb-0">Điều khiển lực đàn hồi (Impedance Control), kẹp mềm phỏng sinh học và thao tác chính xác.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 card-hover-effect">
+                    <div class="brand-icon-box mb-3" style="width: 44px; height: 44px;" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </div>
+                    <h6 class="fw-bold text-light mb-2">Thị Giác 3D &amp; AI</h6>
+                    <p class="text-secondary fs-xs mb-0">Xử lý đám mây điểm 3D, ước lượng tư thế 6-DoF và nhận diện gắp vật thể lộn xộn.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 card-hover-effect">
+                    <div class="brand-icon-box mb-3" style="width: 44px; height: 44px;" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                            <rect x="9" y="9" width="6" height="6"></rect>
+                            <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"></path>
+                        </svg>
+                    </div>
+                    <h6 class="fw-bold text-light mb-2">Điều Khiển FOC &amp; RTOS</h6>
+                    <p class="text-secondary fs-xs mb-0">Thiết kế mạch điều khiển BLDC FOC, bus thời gian thực EtherCAT/CAN-FD và Xenomai.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-dark-card border-secondary rounded-4 p-4">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-light mb-1">Xưởng Chế Tác Vi Mạch &amp; SMT</h6>
+                    <p class="text-secondary fs-xs mb-0">Trang bị dây chuyền dán linh kiện SMT tự động, lò hàn đối lưu 8 vùng nhiệt và máy hiện sóng 500MHz.</p>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-light mb-1">Cụm Máy Chủ GPU AI</h6>
+                    <p class="text-secondary fs-xs mb-0">Hệ thống máy chủ NVIDIA HGX chuyên dụng cho mô phỏng Sim-to-Real (Isaac Gym, MuJoCo) và huấn luyện VLA.</p>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-light mb-1">Khu Thử Nghiệm Thực Địa 500m²</h6>
+                    <p class="text-secondary fs-xs mb-0">Mô hình kho thông minh chuẩn công nghiệp, sàn dốc, cầu thang giả lập và khu thử nghiệm robot y tế.</p>
                 </div>
             </div>
         </div>
@@ -118,8 +232,8 @@
                     <div class="card h-100 bg-dark-card border-secondary rounded-4 shadow-sm overflow-hidden card-hover-effect">
                         <div class="position-relative">
                             <img src="@proj.ImageUrl" class="card-img-top object-fit-cover" style="height: 200px;" alt="@proj.Title">
-                            <span class="position-absolute top-0 end-0 m-3 badge @(proj.IsCompletedProduct ? "bg-success" : "bg-warning text-dark")">
-                                @proj.Status
+                            <span class="position-absolute top-0 end-0 m-3 status-pill @(proj.IsCompletedProduct ? "status-pill-done" : "status-pill-active")">
+                                <span class="status-dot"></span>@proj.Status
                             </span>
                             <span class="position-absolute bottom-0 start-0 m-3 badge bg-darker text-cyan border border-secondary">
                                 @proj.Category
@@ -130,7 +244,7 @@
                             <p class="text-secondary fs-sm flex-grow-1 line-clamp-3">@proj.ShortDescription</p>
                             
                             <div class="mb-3 pt-2 border-top border-secondary-subtle fs-xs text-muted">
-                                <div><i class="bi bi-cpu me-1 text-cyan"></i><strong>Tech:</strong> @proj.TechStack</div>
+                                <div><i class="bi bi-cpu me-1 text-cyan"></i><strong>Công nghệ:</strong> @proj.TechStack</div>
                             </div>
 
                             <div class="d-flex justify-content-between align-items-center mt-auto">
@@ -143,6 +257,94 @@
                     </div>
                 </div>
             }
+        </div>
+    </div>
+</section>
+
+<!-- Về Phòng Thí Nghiệm (Merged from About) -->
+<section id="about-lab" class="py-5 bg-darker border-top border-secondary-subtle">
+    <div class="container py-3">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
+            <div>
+                <span class="text-cyan fw-bold text-uppercase fs-xs tracking-wider">Về Phòng Thí Nghiệm</span>
+                <h2 class="fw-bold text-light mb-1">Hướng Nghiên Cứu &amp; Cơ Sở Vật Chất RoboLab</h2>
+                <p class="text-secondary mb-0 fs-sm">Thành lập từ năm 2015, kết hợp điều khiển tự động kinh điển, cơ khí chính xác và trí tuệ nhân tạo.</p>
+            </div>
+            <div class="mt-3 mt-md-0">
+                <a asp-controller="Docs" asp-action="Index" class="btn btn-sm btn-outline-cyan rounded-pill px-3">
+                    Tài liệu &amp; Quy chuẩn Lab (SOP) <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 card-hover-effect">
+                    <div class="brand-icon-box mb-3" style="width: 44px; height: 44px;" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="7" cy="17" r="2"></circle>
+                            <circle cx="17" cy="17" r="2"></circle>
+                            <path d="M5 17H3v-6l2-5h9l4 5h3v6h-2"></path>
+                            <path d="M9 17h6"></path>
+                        </svg>
+                    </div>
+                    <h6 class="fw-bold text-light mb-2">Robot Tự Hành (AMR)</h6>
+                    <p class="text-secondary fs-xs mb-0">Xe tự hành kho xưởng, Cartographer LiDAR SLAM, điều hướng Nav2 và điều phối đội xe.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 card-hover-effect">
+                    <div class="brand-icon-box mb-3" style="width: 44px; height: 44px;" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                        </svg>
+                    </div>
+                    <h6 class="fw-bold text-light mb-2">Cánh Tay Robot 7-DoF</h6>
+                    <p class="text-secondary fs-xs mb-0">Điều khiển lực đàn hồi (Impedance Control), kẹp mềm phỏng sinh học và thao tác chính xác.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 card-hover-effect">
+                    <div class="brand-icon-box mb-3" style="width: 44px; height: 44px;" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </div>
+                    <h6 class="fw-bold text-light mb-2">Thị Giác 3D &amp; AI</h6>
+                    <p class="text-secondary fs-xs mb-0">Xử lý đám mây điểm 3D, ước lượng tư thế 6-DoF và nhận diện gắp vật thể lộn xộn.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 card-hover-effect">
+                    <div class="brand-icon-box mb-3" style="width: 44px; height: 44px;" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                            <rect x="9" y="9" width="6" height="6"></rect>
+                            <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"></path>
+                        </svg>
+                    </div>
+                    <h6 class="fw-bold text-light mb-2">Điều Khiển FOC &amp; RTOS</h6>
+                    <p class="text-secondary fs-xs mb-0">Thiết kế mạch điều khiển BLDC FOC, bus thời gian thực EtherCAT/CAN-FD và Xenomai.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-dark-card border-secondary rounded-4 p-4">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-light mb-1">Xưởng Chế Tác Vi Mạch &amp; SMT</h6>
+                    <p class="text-secondary fs-xs mb-0">Trang bị dây chuyền dán linh kiện SMT tự động, lò hàn đối lưu 8 vùng nhiệt và máy hiện sóng 500MHz.</p>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-light mb-1">Cụm Máy Chủ GPU AI</h6>
+                    <p class="text-secondary fs-xs mb-0">Hệ thống máy chủ NVIDIA HGX chuyên dụng cho mô phỏng Sim-to-Real (Isaac Gym, MuJoCo) và huấn luyện VLA.</p>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-light mb-1">Khu Thử Nghiệm Thực Địa 500m²</h6>
+                    <p class="text-secondary fs-xs mb-0">Mô hình kho thông minh chuẩn công nghiệp, sàn dốc, cầu thang giả lập và khu thử nghiệm robot y tế.</p>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -168,31 +370,119 @@
             {
                 <div class="col-lg-4 col-md-6">
                     <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 shadow-sm card-hover-effect d-flex flex-column">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
                             <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1">@article.Category</span>
                             <span class="badge bg-secondary-subtle text-warning">@article.Level</span>
                         </div>
-                        <h5 class="fw-bold text-light mb-2 lh-base">
+                        <h6 class="fw-bold text-light mb-2 lh-base">
                             <a asp-controller="Knowledge" asp-action="Detail" asp-route-id="@article.Slug" class="text-light text-decoration-none hover-cyan">
                                 @article.Title
                             </a>
-                        </h5>
-                        <p class="text-secondary fs-sm flex-grow-1">@article.Summary</p>
+                        </h6>
+                        <p class="text-secondary fs-xs flex-grow-1 line-clamp-2 mb-3">@article.Summary</p>
                         
                         <div class="d-flex flex-wrap gap-1 mb-3">
-                            @foreach (var tag in article.Tags.Take(4))
+                            @foreach (var tag in article.Tags.Take(2))
                             {
                                 <span class="badge bg-darker text-secondary border border-secondary fs-xs">#@tag</span>
                             }
                         </div>
 
-                        <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary fs-xs text-secondary mt-auto">
-                            <span><i class="bi bi-clock me-1 text-cyan"></i>@article.ReadTimeMinutes phút đọc</span>
-                            <span><i class="bi bi-calendar3 me-1"></i>@article.PublishedDate</span>
+                        <div class="d-flex justify-content-between align-items-center pt-2 border-top border-secondary fs-xs text-secondary mt-auto">
+                            <span>@article.ReadTimeMinutes phút đọc</span>
+                            <a asp-controller="Knowledge" asp-action="Detail" asp-route-id="@article.Slug" class="text-cyan text-decoration-none fw-medium">Đọc tóm tắt →</a>
                         </div>
                     </div>
                 </div>
             }
+        </div>
+    </div>
+</section>
+
+<!-- Về Phòng Thí Nghiệm (Merged from About) -->
+<section id="about-lab" class="py-5 bg-darker border-top border-secondary-subtle">
+    <div class="container py-3">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
+            <div>
+                <span class="text-cyan fw-bold text-uppercase fs-xs tracking-wider">Về Phòng Thí Nghiệm</span>
+                <h2 class="fw-bold text-light mb-1">Hướng Nghiên Cứu &amp; Cơ Sở Vật Chất RoboLab</h2>
+                <p class="text-secondary mb-0 fs-sm">Thành lập từ năm 2015, kết hợp điều khiển tự động kinh điển, cơ khí chính xác và trí tuệ nhân tạo.</p>
+            </div>
+            <div class="mt-3 mt-md-0">
+                <a asp-controller="Docs" asp-action="Index" class="btn btn-sm btn-outline-cyan rounded-pill px-3">
+                    Tài liệu &amp; Quy chuẩn Lab (SOP) <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 card-hover-effect">
+                    <div class="brand-icon-box mb-3" style="width: 44px; height: 44px;" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="7" cy="17" r="2"></circle>
+                            <circle cx="17" cy="17" r="2"></circle>
+                            <path d="M5 17H3v-6l2-5h9l4 5h3v6h-2"></path>
+                            <path d="M9 17h6"></path>
+                        </svg>
+                    </div>
+                    <h6 class="fw-bold text-light mb-2">Robot Tự Hành (AMR)</h6>
+                    <p class="text-secondary fs-xs mb-0">Xe tự hành kho xưởng, Cartographer LiDAR SLAM, điều hướng Nav2 và điều phối đội xe.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 card-hover-effect">
+                    <div class="brand-icon-box mb-3" style="width: 44px; height: 44px;" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                        </svg>
+                    </div>
+                    <h6 class="fw-bold text-light mb-2">Cánh Tay Robot 7-DoF</h6>
+                    <p class="text-secondary fs-xs mb-0">Điều khiển lực đàn hồi (Impedance Control), kẹp mềm phỏng sinh học và thao tác chính xác.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 card-hover-effect">
+                    <div class="brand-icon-box mb-3" style="width: 44px; height: 44px;" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </div>
+                    <h6 class="fw-bold text-light mb-2">Thị Giác 3D &amp; AI</h6>
+                    <p class="text-secondary fs-xs mb-0">Xử lý đám mây điểm 3D, ước lượng tư thế 6-DoF và nhận diện gắp vật thể lộn xộn.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 card-hover-effect">
+                    <div class="brand-icon-box mb-3" style="width: 44px; height: 44px;" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                            <rect x="9" y="9" width="6" height="6"></rect>
+                            <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"></path>
+                        </svg>
+                    </div>
+                    <h6 class="fw-bold text-light mb-2">Điều Khiển FOC &amp; RTOS</h6>
+                    <p class="text-secondary fs-xs mb-0">Thiết kế mạch điều khiển BLDC FOC, bus thời gian thực EtherCAT/CAN-FD và Xenomai.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-dark-card border-secondary rounded-4 p-4">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-light mb-1">Xưởng Chế Tác Vi Mạch &amp; SMT</h6>
+                    <p class="text-secondary fs-xs mb-0">Trang bị dây chuyền dán linh kiện SMT tự động, lò hàn đối lưu 8 vùng nhiệt và máy hiện sóng 500MHz.</p>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-light mb-1">Cụm Máy Chủ GPU AI</h6>
+                    <p class="text-secondary fs-xs mb-0">Hệ thống máy chủ NVIDIA HGX chuyên dụng cho mô phỏng Sim-to-Real (Isaac Gym, MuJoCo) và huấn luyện VLA.</p>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-light mb-1">Khu Thử Nghiệm Thực Địa 500m²</h6>
+                    <p class="text-secondary fs-xs mb-0">Mô hình kho thông minh chuẩn công nghiệp, sàn dốc, cầu thang giả lập và khu thử nghiệm robot y tế.</p>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -243,41 +533,90 @@
     </div>
 </section>
 
-<!-- Core Members Section -->
-<section class="py-5 bg-darker border-top border-secondary-subtle">
+<!-- Về Phòng Thí Nghiệm (Merged from About) -->
+<section id="about-lab" class="py-5 bg-darker border-top border-secondary-subtle">
     <div class="container py-3">
-        <div class="text-center max-w-2xl mx-auto mb-5">
-            <span class="text-cyan fw-bold text-uppercase fs-xs tracking-wider">Đội Ngũ Chuyên Gia</span>
-            <h2 class="fw-bold text-light mb-2">Ban Lãnh Đạo & Nhà Nghiên Cứu Trọng Điểm</h2>
-            <p class="text-secondary fs-sm">Các Giáo sư, Tiến sĩ và Kỹ sư trưởng định hướng các công nghệ chiến lược</p>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
+            <div>
+                <span class="text-cyan fw-bold text-uppercase fs-xs tracking-wider">Về Phòng Thí Nghiệm</span>
+                <h2 class="fw-bold text-light mb-1">Hướng Nghiên Cứu &amp; Cơ Sở Vật Chất RoboLab</h2>
+                <p class="text-secondary mb-0 fs-sm">Thành lập từ năm 2015, kết hợp điều khiển tự động kinh điển, cơ khí chính xác và trí tuệ nhân tạo.</p>
+            </div>
+            <div class="mt-3 mt-md-0">
+                <a asp-controller="Docs" asp-action="Index" class="btn btn-sm btn-outline-cyan rounded-pill px-3">
+                    Tài liệu &amp; Quy chuẩn Lab (SOP) <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
         </div>
 
-        <div class="row g-4">
-            @foreach (var m in Model.CoreMembers)
-            {
-                <div class="col-lg-3 col-md-6">
-                    <div class="card h-100 bg-dark-card border-secondary rounded-4 text-center p-4 card-hover-effect">
-                        <div class="position-relative mx-auto mb-3" style="width: 110px; height: 110px;">
-                            <img src="@m.AvatarUrl" class="rounded-circle object-fit-cover w-100 h-100 border border-2 border-cyan shadow" alt="@m.Name">
-                        </div>
-                        <h5 class="fw-bold text-light mb-1">@m.Name</h5>
-                        <p class="text-cyan fs-xs fw-semibold mb-2">@m.Role</p>
-                        <p class="text-secondary fs-xs mb-3 flex-grow-1">@m.Specialization</p>
-                        
-                        <div class="pt-3 border-top border-secondary">
-                            <a asp-controller="Members" asp-action="Detail" asp-route-id="@m.Id" class="btn btn-xs btn-outline-light rounded-pill px-3">
-                                Hồ sơ khoa học
-                            </a>
-                        </div>
+        <div class="row g-4 mb-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 card-hover-effect">
+                    <div class="brand-icon-box mb-3" style="width: 44px; height: 44px;" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="7" cy="17" r="2"></circle>
+                            <circle cx="17" cy="17" r="2"></circle>
+                            <path d="M5 17H3v-6l2-5h9l4 5h3v6h-2"></path>
+                            <path d="M9 17h6"></path>
+                        </svg>
                     </div>
+                    <h6 class="fw-bold text-light mb-2">Robot Tự Hành (AMR)</h6>
+                    <p class="text-secondary fs-xs mb-0">Xe tự hành kho xưởng, Cartographer LiDAR SLAM, điều hướng Nav2 và điều phối đội xe.</p>
                 </div>
-            }
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 card-hover-effect">
+                    <div class="brand-icon-box mb-3" style="width: 44px; height: 44px;" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                        </svg>
+                    </div>
+                    <h6 class="fw-bold text-light mb-2">Cánh Tay Robot 7-DoF</h6>
+                    <p class="text-secondary fs-xs mb-0">Điều khiển lực đàn hồi (Impedance Control), kẹp mềm phỏng sinh học và thao tác chính xác.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 card-hover-effect">
+                    <div class="brand-icon-box mb-3" style="width: 44px; height: 44px;" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </div>
+                    <h6 class="fw-bold text-light mb-2">Thị Giác 3D &amp; AI</h6>
+                    <p class="text-secondary fs-xs mb-0">Xử lý đám mây điểm 3D, ước lượng tư thế 6-DoF và nhận diện gắp vật thể lộn xộn.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 bg-dark-card border-secondary rounded-4 p-4 card-hover-effect">
+                    <div class="brand-icon-box mb-3" style="width: 44px; height: 44px;" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                            <rect x="9" y="9" width="6" height="6"></rect>
+                            <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"></path>
+                        </svg>
+                    </div>
+                    <h6 class="fw-bold text-light mb-2">Điều Khiển FOC &amp; RTOS</h6>
+                    <p class="text-secondary fs-xs mb-0">Thiết kế mạch điều khiển BLDC FOC, bus thời gian thực EtherCAT/CAN-FD và Xenomai.</p>
+                </div>
+            </div>
         </div>
 
-        <div class="text-center mt-4 pt-2">
-            <a asp-controller="Members" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">
-                Xem toàn bộ đội ngũ nghiên cứu <i class="bi bi-people-fill ms-1"></i>
-            </a>
+        <div class="card bg-dark-card border-secondary rounded-4 p-4">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-light mb-1">Xưởng Chế Tác Vi Mạch &amp; SMT</h6>
+                    <p class="text-secondary fs-xs mb-0">Trang bị dây chuyền dán linh kiện SMT tự động, lò hàn đối lưu 8 vùng nhiệt và máy hiện sóng 500MHz.</p>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-light mb-1">Cụm Máy Chủ GPU AI</h6>
+                    <p class="text-secondary fs-xs mb-0">Hệ thống máy chủ NVIDIA HGX chuyên dụng cho mô phỏng Sim-to-Real (Isaac Gym, MuJoCo) và huấn luyện VLA.</p>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-light mb-1">Khu Thử Nghiệm Thực Địa 500m²</h6>
+                    <p class="text-secondary fs-xs mb-0">Mô hình kho thông minh chuẩn công nghiệp, sàn dốc, cầu thang giả lập và khu thử nghiệm robot y tế.</p>
+                </div>
+            </div>
         </div>
     </div>
 </section>

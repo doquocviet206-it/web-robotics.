@@ -1,0 +1,51 @@
+@{
+    ViewData["Title"] = "Đăng nhập Quản trị - RoboLab";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card bg-dark-card border-secondary rounded-4 p-4 p-md-5 shadow-lg">
+                <div class="text-center mb-4">
+                    <span class="status-pill status-pill-active mb-3">
+                        <span class="status-dot"></span> Khu vực Quản trị
+                    </span>
+                    <h1 class="h3 fw-bold text-light mb-1">Đăng Nhập Admin</h1>
+                    <p class="text-secondary fs-sm mb-0">Quản lý dự án, bài viết kỹ thuật, công bố khoa học và tài liệu của Lab</p>
+                </div>
+
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger border-danger-subtle fs-sm py-2" role="alert">
+                        <i class="bi bi-exclamation-circle me-1"></i> @ViewBag.Error
+                    </div>
+                }
+
+                <form asp-action="Login" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+
+                    <div class="mb-3">
+                        <label for="username" class="form-label text-light fs-sm fw-medium">Tên đăng nhập</label>
+                        <input type="text" id="username" name="username" class="form-control bg-darker border-secondary text-light" placeholder="admin" required autofocus />
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="password" class="form-label text-light fs-sm fw-medium">Mật khẩu</label>
+                        <input type="password" id="password" name="password" class="form-control bg-darker border-secondary text-light" placeholder="••••••••" required />
+                    </div>
+
+                    <button type="submit" class="btn btn-cyan w-100 rounded-pill fw-semibold">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Đăng nhập hệ thống
+                    </button>
+                </form>
+
+                <div class="mt-4 pt-3 border-top border-secondary text-center">
+                    <a asp-controller="Home" asp-action="Index" class="text-secondary fs-xs text-decoration-none hover-cyan">
+                        <i class="bi bi-arrow-left me-1"></i> Quay lại trang chủ
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

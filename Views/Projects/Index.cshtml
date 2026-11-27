@@ -7,7 +7,7 @@
     <!-- Header -->
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 pb-2 border-bottom border-secondary">
         <div>
-            <span class="badge bg-cyan-subtle text-cyan border border-info-subtle px-3 py-1 rounded-pill mb-2">R&D Portfolio</span>
+            <span class="badge bg-cyan-subtle text-cyan border border-info-subtle px-3 py-1 rounded-pill mb-2">Danh Mục Nghiên Cứu &amp; Phát Triển</span>
             <h1 class="display-6 fw-bold text-light mb-1">Các Dự Án Robot Của Phòng Thí Nghiệm</h1>
             <p class="text-secondary fs-sm mb-0">Tổng hợp các mẫu robot tự hành, cánh tay thao tác, robot phỏng sinh học và drone</p>
         </div>
@@ -41,8 +41,8 @@
             <div class="col-md-3">
                 <select name="status" class="form-select bg-darker border-secondary text-light" onchange="this.form.submit()">
                     <option value="All" selected="@(ViewBag.CurrentStatus == "All")">-- Tất cả trạng thái --</option>
-                    <option value="Đã hoàn thành" selected="@(ViewBag.CurrentStatus == "Đã hoàn thành")">Đã hoàn thành (Ready)</option>
-                    <option value="Đang nghiên cứu" selected="@(ViewBag.CurrentStatus == "Đang nghiên cứu")">Đang nghiên cứu (Active R&D)</option>
+                    <option value="Đã hoàn thành" selected="@(ViewBag.CurrentStatus == "Đã hoàn thành")">Đã hoàn thành</option>
+                    <option value="Đang nghiên cứu" selected="@(ViewBag.CurrentStatus == "Đang nghiên cứu")">Đang nghiên cứu</option>
                 </select>
             </div>
             <div class="col-md-2">
@@ -70,8 +70,8 @@
                     <div class="card h-100 bg-dark-card border-secondary rounded-4 shadow-sm overflow-hidden card-hover-effect d-flex flex-column">
                         <div class="position-relative">
                             <img src="@proj.ImageUrl" class="card-img-top object-fit-cover" style="height: 220px;" alt="@proj.Title">
-                            <span class="position-absolute top-0 end-0 m-3 badge @(proj.IsCompletedProduct ? "bg-success" : "bg-warning text-dark")">
-                                @proj.Status
+                            <span class="position-absolute top-0 end-0 m-3 status-pill @(proj.IsCompletedProduct ? "status-pill-done" : "status-pill-active")">
+                                <span class="status-dot"></span>@proj.Status
                             </span>
                             <span class="position-absolute bottom-0 start-0 m-3 badge bg-darker text-cyan border border-secondary">
                                 @proj.Category
@@ -93,7 +93,7 @@
                             <p class="text-secondary fs-sm flex-grow-1">@proj.ShortDescription</p>
                             
                             <div class="pt-2 pb-3 border-top border-secondary-subtle fs-xs text-muted">
-                                <div><i class="bi bi-cpu me-1 text-cyan"></i><strong>Tech:</strong> @proj.TechStack</div>
+                                <div><i class="bi bi-cpu me-1 text-cyan"></i><strong>Công nghệ:</strong> @proj.TechStack</div>
                             </div>
 
                             <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top border-secondary">

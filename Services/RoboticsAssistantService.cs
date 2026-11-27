@@ -20,7 +20,7 @@ namespace web_robotics.Services
             {
                 return new ChatbotResponse
                 {
-                    Reply = "Chào bạn! Tôi là Trợ lý AI Robotics Lab. Bạn có thể hỏi tôi về các dự án robot, thành viên nghiên cứu, tài liệu hướng dẫn kỹ thuật hoặc các khái niệm như ROS 2, SLAM, FOC, Inverse Kinematics...",
+                    Reply = "Chào bạn! Tôi là Trợ lý AI Robotics Lab. Bạn có thể hỏi tôi về các dự án robot, tài liệu hướng dẫn kỹ thuật hoặc các khái niệm như ROS 2, SLAM, FOC, Inverse Kinematics...",
                     Suggestions = new List<string> { "Giới thiệu AeroBot-AMR 500", "ROS 2 là gì?", "SLAM hoạt động thế nào?", "Các công bố khoa học gần đây" }
                 };
             }
@@ -72,18 +72,7 @@ namespace web_robotics.Services
                 };
             }
 
-            // 5. Hỏi về Thành viên / Lab Director / Trưởng lab
-            if (q.Contains("thành viên") || q.Contains("trưởng lab") || q.Contains("giáo sư") || q.Contains("nhân sự") || q.Contains("director") || q.Contains("tiến sĩ"))
-            {
-                return new ChatbotResponse
-                {
-                    Reply = "Phòng Thí nghiệm Robotics do GS. TS. Trần Quốc Hùng làm Trưởng phòng (Lab Director), cùng PGS. TS. Lê Phương Thảo (AI & Vision), TS. Nguyễn Minh Đức (Điều khiển & Nhúng), ThS. Hoàng Đình Vũ (AMR & ROS 2), ThS. Đỗ Yến Nhi (Soft Robotics) và KS. Phạm Quang Huy (Cơ khí chính xác). Lab quy tụ hơn 25 nghiên cứu sinh và kỹ sư tài năng.",
-                    RelatedLinks = new List<string> { "/Members" },
-                    Suggestions = new List<string> { "Xem danh sách toàn bộ thành viên", "Liên hệ hợp tác nghiên cứu", "Các đề tài đang tuyển sinh NCS" }
-                };
-            }
-
-            // 6. Hỏi về Công bố khoa học / Nghiên cứu / IEEE
+            // 5. Hỏi về Công bố khoa học / Nghiên cứu / IEEE
             if (q.Contains("bài báo") || q.Contains("công bố") || q.Contains("nghiên cứu") || q.Contains("ieee") || q.Contains("paper") || q.Contains("publication"))
             {
                 return new ChatbotResponse

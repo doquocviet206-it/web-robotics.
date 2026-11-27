@@ -6,9 +6,9 @@
 <div class="container py-5">
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 pb-2 border-bottom border-secondary">
         <div>
-            <span class="badge bg-cyan-subtle text-cyan border border-info-subtle px-3 py-1 rounded-pill mb-2">Technical Documentation & SOP</span>
-            <h1 class="display-6 fw-bold text-light mb-1">Tài Liệu Hướng Dẫn Kỹ Thuật & Dataset</h1>
-            <p class="text-secondary fs-sm mb-0">Sổ tay an toàn phòng lab (SOP), hướng dẫn cấu hình phần cứng, tài liệu API và tập dữ liệu mở phục vụ nghiên cứu</p>
+            <span class="badge bg-cyan-subtle text-cyan border border-info-subtle px-3 py-1 rounded-pill mb-2">Tài Liệu Kỹ Thuật &amp; Quy Chuẩn SOP</span>
+            <h1 class="display-6 fw-bold text-light mb-1">Tài Liệu Hướng Dẫn Kỹ Thuật &amp; Dữ Liệu Mở</h1>
+            <p class="text-secondary fs-sm mb-0">Thông tin giới thiệu phòng thí nghiệm, sổ tay an toàn (SOP), hướng dẫn cấu hình phần cứng, tài liệu API và tập dữ liệu mở</p>
         </div>
         <div class="mt-3 mt-md-0">
             <a href="#quickSop" class="btn btn-outline-warning rounded-pill px-3">
@@ -21,10 +21,10 @@
     <div class="d-flex flex-wrap gap-2 mb-4">
         <a asp-action="Index" class="btn btn-sm @(ViewBag.CurrentCategory == "All" ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Tất cả tài liệu</a>
         <a asp-action="Index" asp-route-category="SOP" class="btn btn-sm @(ViewBag.CurrentCategory?.ToString().Contains("SOP") == true ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Quy chuẩn An toàn (SOP)</a>
-        <a asp-action="Index" asp-route-category="Setup" class="btn btn-sm @(ViewBag.CurrentCategory?.ToString().Contains("Setup") == true ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Hướng dẫn cài đặt & Tutorial</a>
-        <a asp-action="Index" asp-route-category="Hardware" class="btn btn-sm @(ViewBag.CurrentCategory?.ToString().Contains("Hardware") == true ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Sơ đồ phần cứng (Hardware Schematics)</a>
-        <a asp-action="Index" asp-route-category="Dataset" class="btn btn-sm @(ViewBag.CurrentCategory?.ToString().Contains("Dataset") == true ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Dữ liệu mở (Open Datasets)</a>
-        <a asp-action="Index" asp-route-category="API" class="btn btn-sm @(ViewBag.CurrentCategory?.ToString().Contains("API") == true ? "btn-cyan" : "btn-outline-secondary") rounded-pill">API Reference & SDK</a>
+        <a asp-action="Index" asp-route-category="Setup" class="btn btn-sm @(ViewBag.CurrentCategory?.ToString().Contains("Setup") == true ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Hướng dẫn cài đặt</a>
+        <a asp-action="Index" asp-route-category="Hardware" class="btn btn-sm @(ViewBag.CurrentCategory?.ToString().Contains("Hardware") == true ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Sơ đồ phần cứng</a>
+        <a asp-action="Index" asp-route-category="Dataset" class="btn btn-sm @(ViewBag.CurrentCategory?.ToString().Contains("Dataset") == true ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Dữ liệu mở</a>
+        <a asp-action="Index" asp-route-category="API" class="btn btn-sm @(ViewBag.CurrentCategory?.ToString().Contains("API") == true ? "btn-cyan" : "btn-outline-secondary") rounded-pill">Tài liệu API &amp; SDK</a>
     </div>
 
     <!-- Docs Cards Grid -->
