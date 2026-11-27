@@ -50,6 +50,8 @@ namespace web_robotics
                 DatabaseInitializer.Initialize(scope.ServiceProvider.GetRequiredService<RoboticsDbContext>());
             }
 
+            var adminPort = builder.Configuration.GetValue<int?>("AdminPortal:Port") ?? 5192;
+
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
@@ -57,9 +59,35 @@ namespace web_robotics
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            app.UseWhen(ctx => ctx.Connection.LocalPort != adminPort, branch => branch.UseHttpsRedirection());
             app.UseStaticFiles();
             app.UseRouting();
+
+            app.Use(async (context, next) =>
+            {
+                var isAdminPort = context.Connection.LocalPort == adminPort;
+                var isAdminPath = context.Request.Path.StartsWithSegments("/quan-tri-noi-bo", StringComparison.OrdinalIgnoreCase);
+
+                if (!isAdminPort && isAdminPath)
+                {
+                    context.Response.StatusCode = StatusCodes.Status404NotFound;
+                    return;
+                }
+
+                if (isAdminPort && !isAdminPath)
+                {
+                    if (context.Request.Path == "/")
+                    {
+                        context.Response.Redirect("/quan-tri-noi-bo");
+                        return;
+                    }
+
+                    context.Response.StatusCode = StatusCodes.Status404NotFound;
+                    return;
+                }
+
+                await next();
+            });
 
             app.UseAuthentication();
             app.UseAuthorization();

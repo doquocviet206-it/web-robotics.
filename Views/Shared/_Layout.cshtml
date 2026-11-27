@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="~/images/robolab-favicon.png" asp-append-version="true" />
+    <link rel="shortcut icon" type="image/png" href="~/images/robolab-favicon.png" asp-append-version="true" />
     <script src="~/js/site.js" asp-append-version="true"></script>
     <title>@ViewData["Title"] - Phòng Thí Nghiệm Robotics & Trí Tuệ Nhân Tạo (RoboLab)</title>
     
@@ -29,16 +31,8 @@
         <nav class="navbar navbar-expand-xxl py-3">
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center gap-2 fw-bold fs-4 text-gradient" asp-controller="Home" asp-action="Index">
-                    <span class="brand-icon-box" aria-hidden="true">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="5" y="7" width="14" height="11" rx="3"></rect>
-                            <path d="M12 3v4"></path>
-                            <circle cx="12" cy="2.5" r="1"></circle>
-                            <circle cx="9.5" cy="12" r="1.2" fill="currentColor"></circle>
-                            <circle cx="14.5" cy="12" r="1.2" fill="currentColor"></circle>
-                            <path d="M9 15.5h6"></path>
-                            <path d="M2 12h3M19 12h3"></path>
-                        </svg>
+                    <span class="brand-icon-box brand-logo-box" aria-hidden="true">
+                        <img src="~/images/robolab-favicon.png" asp-append-version="true" alt="" class="brand-logo-img" />
                     </span>
                     <span>Robo<span class="text-cyan">Lab</span></span>
                     <span class="badge bg-primary-subtle text-primary border border-primary-subtle fs-xs ms-1">PHÒNG THÍ NGHIỆM</span>
@@ -177,8 +171,8 @@
             <div class="row g-4 mb-4">
                 <div class="col-lg-4 col-md-6">
                     <div class="d-flex align-items-center gap-2 fw-bold fs-4 text-gradient mb-3">
-                        <span class="brand-icon-box">
-                            <i class="bi bi-cpu-fill"></i>
+                        <span class="brand-icon-box brand-logo-box" aria-hidden="true">
+                            <img src="~/images/robolab-favicon.png" asp-append-version="true" alt="" class="brand-logo-img" />
                         </span>
                         <span>Robo<span class="text-cyan">Lab</span></span>
                     </div>
@@ -244,7 +238,7 @@
                 <div class="d-flex flex-wrap align-items-center gap-3">
                     <a asp-controller="Docs" asp-action="Index" class="footer-link">Tài liệu &amp; Quy chuẩn (SOP)</a>
                     <a asp-controller="Home" asp-action="Contact" class="footer-link">Hợp tác Doanh nghiệp</a>
-                    @if (User.IsInRole("Admin"))
+                    @if (Context.Connection.LocalPort == 5192 && User.IsInRole("Admin"))
                     {
                         <a asp-controller="Admin" asp-action="Index" class="footer-link text-cyan fw-semibold">Quản trị</a>
                         <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">

@@ -369,3 +369,14 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+.brand-logo-box {
+    background: transparent !important;
+    width: 38px;
+    height: 38px;
+}
+.brand-logo-img {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+    display: block;
+}
